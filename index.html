@@ -40,6 +40,13 @@
   --w-indigo: #5553D8;
   --w-pink: #E9477A;
   --w-gold: #F2A516;
+  --r-n: #8E94A6;
+  --r-r: #3E8EF0;
+  --r-sr: #A45BF0;
+  --r-ssr: #EFA300;
+  --r-ur: #FF4F9A;
+  --rainbow: linear-gradient(135deg, #FF5F6D, #FFC371, #47E5BC, #5B8CFF, #C86DD7);
+  --night: #160F33;
   --display: "Dela Gothic One", "Hiragino Sans", "Noto Sans JP", system-ui, sans-serif;
   --body: "M PLUS Rounded 1c", "Hiragino Maru Gothic ProN", "Hiragino Sans", "Noto Sans JP", system-ui, sans-serif;
   --tabbar-h: 64px;
@@ -105,8 +112,10 @@ p { margin: 0; }
   -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
 }
 .topbar h1 { font-size: 17px; font-weight: 800; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.topbar .wordmark { font-family: var(--display); font-weight: 400; font-size: 20px; letter-spacing: .02em; }
-.back { display: grid; place-items: center; width: 36px; height: 36px; margin-left: -8px; border-radius: 12px; font-size: 22px; color: var(--accent); }
+.topbar .wordmark { font-family: var(--display); font-weight: 400; font-size: 17px; letter-spacing: .02em; }
+.back { display: grid; place-items: center; width: 36px; height: 36px; margin-left: -8px; border-radius: 12px; font-size: 22px; color: var(--accent); flex: none; }
+.wallet { display: flex; gap: 5px; flex: none; }
+.chip { display: inline-flex; align-items: center; gap: 2px; height: 28px; padding: 0 8px; border-radius: 99px; background: var(--surface); box-shadow: var(--shadow); font-weight: 800; font-size: 12px; font-variant-numeric: tabular-nums; white-space: nowrap; }
 main#view { padding-inline: 16px; padding-block: 4px calc(var(--tabbar-h) + 28px + env(safe-area-inset-bottom, 0px)); display: grid; gap: 16px; }
 
 .tabbar {
@@ -117,11 +126,12 @@ main#view { padding-inline: 16px; padding-block: 4px calc(var(--tabbar-h) + 28px
   -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
   border-top: 1px solid var(--line);
 }
-.tabbar .inner { display: grid; grid-template-columns: repeat(4, 1fr); width: 100%; max-width: 560px; height: var(--tabbar-h); }
+.tabbar .inner { display: grid; grid-template-columns: repeat(5, 1fr); width: 100%; max-width: 560px; height: var(--tabbar-h); }
 .tab { display: grid; justify-items: center; align-content: center; gap: 2px; font-size: 11px; font-weight: 700; color: var(--faint); position: relative; }
 .tab .ic { font-size: 24px; }
 .tab[aria-current="page"] { color: var(--accent); }
 .tab .count { position: absolute; top: 7px; left: calc(50% + 6px); min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--bad); color: #fff; font-size: 11px; line-height: 18px; text-align: center; }
+.tab .dot { position: absolute; top: 9px; left: calc(50% + 9px); width: 9px; height: 9px; border-radius: 50%; background: var(--bad); }
 
 /* ---------- shared pieces ---------- */
 .card { background: var(--surface); border-radius: 20px; padding: 16px; box-shadow: var(--shadow); }
@@ -135,9 +145,10 @@ main#view { padding-inline: 16px; padding-block: 4px calc(var(--tabbar-h) + 28px
 .bar.thin { height: 8px; }
 .stars { display: inline-flex; gap: 2px; color: var(--track); }
 .stars .on { color: var(--gold); }
-.hearts { display: inline-flex; gap: 3px; font-size: 20px; }
+.hearts { display: inline-flex; gap: 3px; font-size: 20px; align-items: center; }
 .hearts .ic { color: var(--heart); transition: transform .25s; }
 .hearts .off { color: var(--track); transform: scale(.85); }
+.hearts .shield { color: var(--w-blue); font-size: 18px; }
 .tag { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 99px; font-size: 12px; font-weight: 800; color: var(--c, var(--accent)); background: color-mix(in srgb, var(--c, var(--accent)) 14%, transparent); }
 .btn {
   --c: var(--accent);
@@ -152,12 +163,16 @@ main#view { padding-inline: 16px; padding-block: 4px calc(var(--tabbar-h) + 28px
 .btn.ghost { background: var(--surface); color: var(--c); box-shadow: 0 5px 0 var(--line), inset 0 0 0 2px var(--line); }
 .btn.ghost:active:not(:disabled) { box-shadow: 0 1px 0 var(--line), inset 0 0 0 2px var(--line); }
 .btn:disabled { --c: var(--faint); }
+.btn.small { min-height: 42px; font-size: 14px; border-radius: 13px; padding: 6px 12px; }
+.btn small { display: block; font-size: 11px; font-weight: 700; opacity: .9; }
+.btn.stack { flex-direction: column; gap: 0; line-height: 1.3; }
 .linkbtn { display: block; width: 100%; padding: 10px; text-align: center; font-weight: 800; color: var(--c, var(--muted)); }
 .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .tile { background: var(--surface); border-radius: 16px; padding: 12px 14px; box-shadow: var(--shadow); display: grid; gap: 2px; min-width: 0; }
 .tile .k { font-size: 12px; font-weight: 800; color: var(--c, var(--muted)); display: flex; align-items: center; gap: 5px; }
 .tile .v { font-family: var(--display); font-size: 22px; line-height: 1.3; font-variant-numeric: tabular-nums; }
 .formula { white-space: pre-line; font-weight: 700; font-size: 14px; line-height: 1.75; padding: 12px 14px; border-radius: 12px; background: color-mix(in srgb, var(--c) 12%, transparent); border-left: 4px solid var(--c); }
+.card h3 { font-size: 15px; font-weight: 800; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
 
 /* ---------- home ---------- */
 .player { display: grid; gap: 14px; }
@@ -185,6 +200,16 @@ main#view { padding-inline: 16px; padding-block: 4px calc(var(--tabbar-h) + 28px
 .mode .ic { font-size: 26px; }
 .mode b { display: block; font-weight: 800; font-size: 16px; }
 .mode small { font-size: 12px; font-weight: 700; opacity: .92; }
+.missions { display: grid; gap: 12px; }
+.mission { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 4px 12px; }
+.mission .t { font-weight: 800; font-size: 14px; }
+.mission .r { font-size: 12px; font-weight: 800; color: var(--muted); }
+.mission .bar { grid-column: 1; }
+.mission .act { grid-row: 1 / span 3; grid-column: 2; }
+.claim { min-width: 84px; height: 36px; padding: 0 12px; border-radius: 12px; font-weight: 800; font-size: 13px; background: var(--surface-2); color: var(--faint); }
+.claim.ready { background: var(--bad); color: #fff; box-shadow: 0 3px 0 #A5262B; animation: nudge 1.4s ease-in-out infinite; }
+.claim.done { background: transparent; color: var(--good); }
+@keyframes nudge { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
 .world { display: flex; align-items: center; gap: 14px; width: 100%; text-align: left; background: var(--surface); border-radius: 20px; padding: 14px; box-shadow: var(--shadow); transition: transform .1s; }
 .world:active { transform: scale(.985); }
 .world .icon { position: relative; width: 60px; height: 60px; border-radius: 17px; display: grid; place-items: center; font-size: 28px; color: #fff; background: linear-gradient(150deg, color-mix(in srgb, var(--c) 78%, #fff), var(--c)); flex: none; }
@@ -221,7 +246,7 @@ main#view { padding-inline: 16px; padding-block: 4px calc(var(--tabbar-h) + 28px
 .node .boss-tag { font-size: 11px; font-weight: 800; letter-spacing: .1em; color: var(--bad); }
 @keyframes pulse { from { transform: scale(.94); } to { transform: scale(1.08); } }
 
-/* ---------- stage / lesson ---------- */
+/* ---------- stage / lesson / boss ---------- */
 .stage-head { display: grid; gap: 8px; }
 .stage-head h2 { font-family: var(--display); font-weight: 400; font-size: 26px; line-height: 1.3; }
 .stage-head p { color: var(--muted); }
@@ -232,7 +257,6 @@ main#view { padding-inline: 16px; padding-block: 4px calc(var(--tabbar-h) + 28px
 .rules { display: grid; gap: 8px; }
 .rules div { display: flex; gap: 10px; align-items: baseline; font-size: 14px; }
 .rules .ic { color: var(--c); }
-.card h3 { font-size: 15px; font-weight: 800; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
 .pager { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin-inline: -16px; }
 .pager::-webkit-scrollbar { display: none; }
 .page { flex: 0 0 100%; scroll-snap-align: center; padding-inline: 16px; }
@@ -251,7 +275,127 @@ main#view { padding-inline: 16px; padding-block: 4px calc(var(--tabbar-h) + 28px
 .boss-hero .face { font-size: 92px; line-height: 1.1; animation: float 2.6s ease-in-out infinite alternate; }
 .boss-hero h2 { font-family: var(--display); font-weight: 400; font-size: 28px; }
 .boss-hero q { color: var(--muted); font-weight: 700; }
+.vs { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 10px; text-align: center; }
+.vs .side { display: grid; gap: 4px; }
+.vs .side b { font-family: var(--display); font-weight: 400; font-size: 18px; }
+.vs .side small { font-size: 12px; color: var(--muted); font-weight: 700; }
+.vs .x { font-family: var(--display); color: var(--bad); }
 @keyframes float { from { transform: translateY(-6px); } to { transform: translateY(6px); } }
+
+/* ---------- items ---------- */
+.item {
+  --rc: var(--r-n);
+  position: relative; aspect-ratio: 1; width: 100%; border-radius: 16px; display: grid; place-items: center;
+  font-size: 34px; line-height: 1;
+  background: radial-gradient(circle at 50% 38%, color-mix(in srgb, var(--rc) 26%, var(--surface)), var(--surface) 78%);
+  border: 2.5px solid var(--rc);
+}
+.item[data-r="R"] { --rc: var(--r-r); }
+.item[data-r="SR"] { --rc: var(--r-sr); }
+.item[data-r="SSR"] { --rc: var(--r-ssr); box-shadow: 0 0 12px color-mix(in srgb, var(--r-ssr) 45%, transparent); }
+.item[data-r="UR"] { --rc: var(--r-ur); border-color: transparent; background: radial-gradient(circle at 50% 38%, color-mix(in srgb, var(--r-ur) 22%, var(--surface)), var(--surface) 78%) padding-box, var(--rainbow) border-box; box-shadow: 0 0 16px color-mix(in srgb, var(--r-ur) 45%, transparent); }
+.item .rar { position: absolute; top: 4px; left: 6px; font-family: var(--display); font-size: 10px; color: var(--rc); }
+.item .lvl { position: absolute; bottom: 4px; right: 6px; font-size: 10px; font-weight: 800; color: var(--ink); font-variant-numeric: tabular-nums; }
+.item .lb { position: absolute; bottom: 6px; left: 6px; display: flex; gap: 1px; }
+.item .lb i { width: 4px; height: 4px; border-radius: 50%; background: var(--track); }
+.item .lb i.on { background: var(--rc); }
+.item .new { position: absolute; top: -7px; right: -7px; padding: 1px 6px; border-radius: 99px; background: var(--bad); color: #fff; font-size: 9.5px; font-weight: 800; }
+.item .eq { position: absolute; top: 4px; right: 5px; width: 17px; height: 17px; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: #fff; font-size: 10px; font-weight: 800; }
+.item.unknown { --rc: var(--line); background: var(--surface-2); color: var(--faint); font-size: 22px; }
+.item.unknown .rar { color: var(--faint); }
+.inv { display: grid; grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); gap: 12px 10px; }
+.inv button { display: grid; gap: 4px; }
+.inv .name { font-size: 10.5px; font-weight: 700; line-height: 1.3; text-align: center; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.power { display: grid; gap: 12px; }
+.power .big { display: flex; align-items: baseline; gap: 8px; }
+.power .big b { font-family: var(--display); font-weight: 400; font-size: 34px; line-height: 1; }
+.power .big span { font-weight: 800; color: var(--muted); font-size: 13px; }
+.statgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.statgrid div { display: grid; gap: 0; padding: 8px 10px; border-radius: 12px; background: var(--surface-2); }
+.statgrid small { font-size: 10.5px; color: var(--muted); font-weight: 800; }
+.statgrid b { font-size: 15px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.slots { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.slot-btn { display: grid; gap: 4px; justify-items: stretch; text-align: center; }
+.slot-btn .label { font-size: 11px; font-weight: 800; color: var(--muted); }
+.slot-btn .empty { aspect-ratio: 1; border-radius: 16px; border: 2.5px dashed var(--line); display: grid; place-items: center; color: var(--faint); font-size: 22px; }
+.filters { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
+.filters::-webkit-scrollbar { display: none; }
+.filters button { flex: none; height: 34px; padding: 0 14px; border-radius: 99px; background: var(--surface); box-shadow: var(--shadow); font-weight: 800; font-size: 13px; color: var(--muted); }
+.filters button[aria-pressed="true"] { background: var(--accent); color: #fff; }
+.detail-head { display: grid; grid-template-columns: 96px 1fr; gap: 14px; align-items: center; }
+.detail-head .item { font-size: 48px; }
+.detail-head h2 { font-family: var(--display); font-weight: 400; font-size: 21px; line-height: 1.35; }
+.detail-head .sub { font-size: 12px; font-weight: 800; color: var(--muted); display: flex; gap: 8px; flex-wrap: wrap; }
+.rtag { font-family: var(--display); font-size: 12px; padding: 1px 8px; border-radius: 6px; color: #fff; background: var(--rc); }
+.rtag[data-r="N"] { --rc: var(--r-n); }
+.rtag[data-r="R"] { --rc: var(--r-r); }
+.rtag[data-r="SR"] { --rc: var(--r-sr); }
+.rtag[data-r="SSR"] { --rc: var(--r-ssr); }
+.rtag[data-r="UR"] { background: var(--rainbow); }
+.flavor { font-size: 13px; color: var(--muted); font-style: italic; }
+.statrows { display: grid; gap: 6px; }
+.statrows div { display: flex; justify-content: space-between; font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.statrows .up { color: var(--good); }
+.lbpips { display: inline-flex; gap: 3px; vertical-align: middle; }
+.lbpips i { width: 10px; height: 10px; border-radius: 3px; background: var(--track); transform: rotate(45deg); }
+.lbpips i.on { background: var(--gold); }
+.enh-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.boom { text-align: center; font-family: var(--display); font-size: 22px; color: var(--flame); animation: pop .4s cubic-bezier(.3, 1.6, .5, 1); }
+
+/* ---------- gacha ---------- */
+.altar {
+  position: relative; overflow: hidden; border-radius: 24px; padding: 20px 18px; color: #fff; display: grid; gap: 14px;
+  background:
+    radial-gradient(1.5px 1.5px at 12% 18%, #fff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 78% 12%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 88% 58%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 22% 72%, #fff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 55% 30%, #fff 50%, transparent 51%),
+    radial-gradient(120% 90% at 50% 0%, #5438C9 0%, #2A1B6E 45%, var(--night) 100%);
+}
+.altar .eyebrow { color: #FFD66B; }
+.altar h2 { font-family: var(--display); font-weight: 400; font-size: 26px; line-height: 1.3; }
+.pickup { display: grid; grid-template-columns: 84px 1fr; gap: 14px; align-items: center; padding: 12px; border-radius: 18px; background: rgba(255, 255, 255, .08); border: 1px solid rgba(255, 255, 255, .14); }
+.pickup .item { font-size: 42px; }
+.pickup b { display: block; font-size: 16px; }
+.pickup small { font-size: 12px; opacity: .85; }
+.pity { display: grid; gap: 6px; font-size: 13px; font-weight: 800; }
+.pity .bar { background: rgba(255, 255, 255, .18); }
+.summon-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.summon-btns .wide { grid-column: 1 / -1; }
+.sbtn { --c: #7B5CFF; display: grid; justify-items: center; gap: 1px; padding: 10px 8px; border-radius: 16px; color: #fff; background: linear-gradient(160deg, color-mix(in srgb, var(--c) 70%, #fff), var(--c)); box-shadow: 0 5px 0 color-mix(in srgb, var(--c) 60%, #000); font-weight: 800; margin-bottom: 5px; transition: transform .08s, box-shadow .08s; }
+.sbtn:active:not(:disabled) { transform: translateY(4px); box-shadow: 0 1px 0 color-mix(in srgb, var(--c) 60%, #000); }
+.sbtn b { font-size: 16px; }
+.sbtn small { font-size: 12px; opacity: .92; }
+.sbtn.gold { --c: #F29B00; }
+.sbtn:disabled { --c: #5B5680; opacity: .7; }
+.rates { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; text-align: center; }
+.rates div { padding: 8px 4px; border-radius: 12px; background: var(--surface-2); display: grid; }
+.rates b { font-family: var(--display); font-size: 13px; }
+.rates small { font-size: 12px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.summon { position: fixed; inset: 0; z-index: 80; overflow-y: auto; color: #fff; display: grid; gap: 16px; grid-template-rows: 1fr auto; padding: calc(env(safe-area-inset-top, 0px) + 12px) 16px calc(env(safe-area-inset-bottom, 0px) + 12px); background: radial-gradient(circle at 50% 40%, #2E1F78, #0A0720 72%); }
+.summon .stage { display: grid; place-items: center; align-content: center; gap: 22px; }
+.orb-wrap { position: relative; width: 170px; height: 170px; animation: shake 0.35s ease-in-out infinite; }
+.orb { position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle at 36% 30%, #fff 0%, var(--oc) 38%, color-mix(in srgb, var(--oc) 40%, transparent) 66%, transparent 72%); box-shadow: 0 0 70px 24px color-mix(in srgb, var(--oc) 70%, transparent); }
+.orb.after { opacity: 0; animation: promote .5s 1.15s forwards; }
+.orb.rainbow { background: radial-gradient(circle at 36% 30%, #fff 0%, transparent 40%), conic-gradient(#FF5F6D, #FFC371, #47E5BC, #5B8CFF, #C86DD7, #FF5F6D); box-shadow: 0 0 80px 30px rgba(255, 180, 220, .7); }
+.summon .msg { font-family: var(--display); font-size: 20px; letter-spacing: .1em; }
+.summon .hint { font-size: 12px; opacity: .7; }
+@keyframes shake { 0%, 100% { transform: translate(0, 0); } 25% { transform: translate(-2px, 1px); } 75% { transform: translate(2px, -1px); } }
+@keyframes promote { from { opacity: 0; transform: scale(.7); } 60% { transform: scale(1.25); } to { opacity: 1; transform: scale(1); } }
+.pulls { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px 8px; width: 100%; max-width: 520px; }
+.pulls.one { grid-template-columns: minmax(0, 180px); justify-content: center; }
+.pull { display: grid; gap: 4px; justify-items: center; animation: flipin .5s cubic-bezier(.3, 1.4, .5, 1) backwards; animation-delay: var(--d); }
+.pull .item { font-size: 30px; }
+.pulls.one .item { font-size: 76px; }
+.pull .item[data-r="SSR"], .pull .item[data-r="UR"] { animation: glow 1.4s ease-in-out infinite alternate; }
+.pull .name { font-size: 10px; font-weight: 700; text-align: center; line-height: 1.3; opacity: .92; }
+.pulls.one .name { font-size: 16px; }
+.pull .note { font-size: 10px; font-weight: 800; color: #FFD66B; }
+.pull .note.new { color: #FF7C9C; }
+@keyframes flipin { from { transform: rotateY(90deg) scale(.6); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes glow { from { filter: drop-shadow(0 0 4px var(--rc)); } to { filter: drop-shadow(0 0 16px var(--rc)); } }
+.summon .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; max-width: 520px; justify-self: center; }
 
 /* ---------- quiz ---------- */
 .quiz { position: fixed; inset: 0; z-index: 50; background: var(--paper); display: flex; justify-content: center; padding-top: env(safe-area-inset-top, 0px); }
@@ -262,20 +406,35 @@ main#view { padding-inline: 16px; padding-block: 4px calc(var(--tabbar-h) + 28px
 .ta-sec { font-family: var(--display); font-size: 16px; width: 48px; text-align: right; }
 .ta-sec.warn { color: var(--bad); }
 .ta-score { display: inline-flex; align-items: center; gap: 4px; font-family: var(--display); color: var(--good); }
-.boss-card { margin: 0 16px 6px; display: flex; align-items: center; gap: 14px; background: var(--surface); border-radius: 18px; padding: 12px; box-shadow: var(--shadow); position: relative; }
+.battle { margin: 0 16px 6px; display: grid; gap: 8px; }
+.boss-card { display: flex; align-items: center; gap: 14px; background: var(--surface); border-radius: 18px; padding: 12px; box-shadow: var(--shadow); position: relative; }
 .boss-card .face { font-size: 48px; line-height: 1; }
 .boss-card .face.hit { animation: hit .35s; }
-.boss-card .meta { flex: 1; display: grid; gap: 6px; }
-.boss-card .meta div { display: flex; justify-content: space-between; font-weight: 800; }
-.boss-card .hp { font-size: 12px; color: var(--bad); }
+.boss-card .meta, .me-card .meta { flex: 1; display: grid; gap: 5px; }
+.boss-card .meta div, .me-card .meta div { display: flex; justify-content: space-between; font-weight: 800; font-size: 14px; }
+.hp { font-size: 12px; font-variant-numeric: tabular-nums; }
+.boss-card .hp { color: var(--bad); }
+.me-card { display: flex; align-items: center; gap: 12px; padding: 8px 12px; border-radius: 14px; background: var(--surface); box-shadow: var(--shadow); position: relative; }
+.me-card .me { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--w-indigo); color: #fff; font-family: var(--display); font-size: 12px; }
+.me-card .hp { color: var(--good); }
+.me-card.hurt { animation: hurt .4s; }
+.me-card .shields { display: inline-flex; gap: 2px; color: var(--w-blue); }
+@keyframes hurt { 0%, 100% { transform: translateX(0); background: var(--surface); } 30% { transform: translateX(-6px); background: var(--bad-soft); } 60% { transform: translateX(5px); } }
+.dmg { position: absolute; left: 34px; top: 4px; z-index: 2; font-family: var(--display); font-size: 26px; color: #fff; -webkit-text-stroke: 1.5px #C0282D; paint-order: stroke fill; text-shadow: 0 2px 0 rgba(0, 0, 0, .25); pointer-events: none; animation: dmg 1s forwards; }
+.dmg.crit { font-size: 32px; color: #FFE36B; -webkit-text-stroke-color: #B35C00; }
+.dmg.taken { left: auto; right: 16px; font-size: 20px; color: #fff; -webkit-text-stroke-color: #7A1D24; }
+@keyframes dmg { 0% { transform: translateY(12px) scale(.6); opacity: 0; } 18% { transform: translateY(-4px) scale(1.18); opacity: 1; } 70% { opacity: 1; } 100% { transform: translateY(-26px); opacity: 0; } }
 .crit { position: absolute; top: -12px; right: 10px; padding: 3px 11px; border-radius: 99px; background: var(--flame); color: #fff; font-family: var(--display); font-size: 13px; transform: rotate(-6deg); animation: pop .35s cubic-bezier(.3, 1.6, .5, 1); }
 @keyframes hit { 0%, 100% { transform: translateX(0) rotate(0); } 20% { transform: translateX(-14px) rotate(-7deg); } 40% { transform: translateX(12px) rotate(6deg); } 60% { transform: translateX(-8px) rotate(-4deg); } 80% { transform: translateX(5px) rotate(2deg); } }
 @keyframes pop { from { transform: scale(.3) rotate(-6deg); opacity: 0; } to { transform: scale(1) rotate(-6deg); opacity: 1; } }
 .q-scroll { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
 .q-body { display: grid; gap: 18px; padding: 12px 20px 32px; }
-.q-tags { display: flex; align-items: center; gap: 8px; }
-.combo { margin-left: auto; display: inline-flex; align-items: center; gap: 4px; font-family: var(--display); font-size: 14px; color: var(--flame); animation: pop .3s cubic-bezier(.3, 1.6, .5, 1); }
+.q-tags { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.combo { margin-left: auto; display: inline-flex; align-items: center; gap: 4px; font-family: var(--display); font-size: 14px; color: var(--flame); animation: pop2 .3s cubic-bezier(.3, 1.6, .5, 1); }
+@keyframes pop2 { from { transform: scale(.3); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 .prompt { font-size: 19px; font-weight: 800; line-height: 1.7; }
+.hintbtn { justify-self: start; display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px; border-radius: 99px; background: color-mix(in srgb, var(--gold) 18%, var(--surface)); color: var(--ink); font-weight: 800; font-size: 13px; box-shadow: var(--shadow); }
+.hintbtn .ic { color: var(--gold); }
 .choices { display: grid; gap: 12px; }
 .choice { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; padding: 13px 14px; border-radius: 16px; background: var(--surface); border: 2px solid var(--line); font-weight: 700; font-size: 16px; line-height: 1.5; transition: transform .1s, border-color .2s, background .2s; }
 .choice:active:not(:disabled) { transform: scale(.98); }
@@ -288,8 +447,9 @@ main#view { padding-inline: 16px; padding-block: 4px calc(var(--tabbar-h) + 28px
 .choice.bad { border-color: var(--bad); background: var(--bad-soft); }
 .choice.bad .key { border-color: var(--bad); color: var(--bad); }
 .choice.bad .mark { color: var(--bad); }
-.choice.dim { color: var(--muted); border-color: var(--surface-2); }
-.choice.dim .key { color: var(--faint); border-color: var(--surface-2); }
+.choice.dim, .choice.gone { color: var(--muted); border-color: var(--surface-2); }
+.choice.dim .key, .choice.gone .key { color: var(--faint); border-color: var(--surface-2); }
+.choice.gone { opacity: .45; text-decoration: line-through; }
 .tf { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .tf button { position: relative; display: grid; justify-items: center; gap: 8px; padding: 26px 8px 20px; border-radius: 20px; background: var(--surface); border: 2px solid color-mix(in srgb, var(--c) 35%, transparent); font-weight: 800; font-size: 17px; transition: transform .1s; }
 .tf button:active:not(:disabled) { transform: scale(.97); }
@@ -302,7 +462,7 @@ main#view { padding-inline: 16px; padding-block: 4px calc(var(--tabbar-h) + 28px
 .tf .good .mark { color: var(--good); }
 .tf .bad .mark { color: var(--bad); }
 .order-label { font-size: 12px; font-weight: 800; color: var(--muted); }
-.slots, .pool { display: grid; gap: 8px; }
+.slots-o, .pool { display: grid; gap: 8px; }
 .slot { display: flex; align-items: center; gap: 12px; min-height: 50px; padding: 10px 12px; border-radius: 14px; border: 2px dashed var(--line); text-align: left; font-weight: 700; width: 100%; }
 .slot .n { width: 26px; height: 26px; flex: none; display: grid; place-items: center; border-radius: 50%; background: var(--track); color: #fff; font-family: var(--display); font-size: 13px; }
 .slot.filled { border-style: solid; background: var(--surface); }
@@ -324,7 +484,7 @@ main#view { padding-inline: 16px; padding-block: 4px calc(var(--tabbar-h) + 28px
 .feedback .head small { font-size: 13px; font-weight: 800; }
 .feedback .answer { font-weight: 800; }
 .feedback .answer small { display: block; font-size: 12px; color: var(--c); }
-.feedback .exp { font-size: 14px; line-height: 1.75; max-height: 34vh; overflow-y: auto; }
+.feedback .exp { font-size: 14px; line-height: 1.75; max-height: 30vh; overflow-y: auto; }
 @keyframes slideup { from { transform: translateY(40px); opacity: 0; } to { transform: none; opacity: 1; } }
 .flash { position: absolute; inset: 0; pointer-events: none; border: 10px solid var(--c); animation: flash .45s forwards; }
 @keyframes flash { from { opacity: .9; } to { opacity: 0; } }
@@ -335,10 +495,10 @@ main#view { padding-inline: 16px; padding-block: 4px calc(var(--tabbar-h) + 28px
 
 /* ---------- result ---------- */
 .result { flex: 1; overflow-y: auto; }
-.result .inner { display: grid; gap: 20px; padding: 28px 20px 24px; }
+.result .inner { display: grid; gap: 18px; padding: 26px 20px 24px; }
 .result .hero { display: grid; justify-items: center; gap: 6px; text-align: center; }
-.result .hero .emoji { font-size: 76px; line-height: 1.1; animation: pop .5s cubic-bezier(.3, 1.6, .5, 1); }
-.result .hero h2 { font-family: var(--display); font-weight: 400; font-size: 28px; line-height: 1.3; }
+.result .hero .emoji { font-size: 72px; line-height: 1.1; animation: pop2 .5s cubic-bezier(.3, 1.6, .5, 1); }
+.result .hero h2 { font-family: var(--display); font-weight: 400; font-size: 27px; line-height: 1.3; }
 .result .hero p { color: var(--muted); }
 .big-stars { display: flex; justify-content: center; align-items: flex-end; gap: 14px; color: var(--track); }
 .big-stars .ic { font-size: 50px; }
@@ -347,6 +507,16 @@ main#view { padding-inline: 16px; padding-block: 4px calc(var(--tabbar-h) + 28px
 .big-stars .ic:nth-child(2).on { animation-name: starpop2; }
 @keyframes starpop { from { transform: scale(.2); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 @keyframes starpop2 { from { transform: translateY(-10px) scale(.2); opacity: 0; } to { transform: translateY(-10px) scale(1); opacity: 1; } }
+.loot { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; }
+.loot span { display: inline-flex; align-items: center; gap: 4px; padding: 6px 12px; border-radius: 99px; background: var(--surface); box-shadow: var(--shadow); font-weight: 800; font-variant-numeric: tabular-nums; }
+.chest { display: grid; justify-items: center; gap: 8px; padding: 16px; border-radius: 20px; text-align: center; background: var(--surface); box-shadow: var(--shadow); width: 100%; }
+.chest .box { position: relative; width: 96px; height: 96px; display: grid; place-items: center; border-radius: 26px; font-size: 56px; background: radial-gradient(circle at 50% 40%, color-mix(in srgb, var(--cc) 40%, var(--surface)), var(--surface) 75%); border: 3px solid var(--cc); animation: wobble 1.1s ease-in-out infinite; }
+.chest.rainbow .box { border-color: transparent; background: radial-gradient(circle at 50% 40%, #FFE9F4, var(--surface) 75%) padding-box, var(--rainbow) border-box; }
+.chest.opened .box { animation: none; }
+.chest b { font-family: var(--display); font-weight: 400; font-size: 18px; }
+.chest small { font-size: 12px; color: var(--muted); font-weight: 700; }
+.chest .contents { animation: pop2 .4s cubic-bezier(.3, 1.6, .5, 1); }
+@keyframes wobble { 0%, 100% { transform: rotate(0); } 15% { transform: rotate(-8deg) scale(1.04); } 30% { transform: rotate(7deg); } 45% { transform: rotate(-4deg); } 60% { transform: rotate(0); } }
 .notes { display: grid; gap: 4px; font-size: 14px; font-weight: 800; color: var(--gold); }
 .notes div { display: flex; align-items: center; gap: 6px; }
 .levelup { display: flex; align-items: center; gap: 14px; padding: 16px; border-radius: 18px; color: #fff; background: linear-gradient(135deg, #7F72F0, var(--w-indigo)); }
@@ -356,9 +526,11 @@ main#view { padding-inline: 16px; padding-block: 4px calc(var(--tabbar-h) + 28px
 .badge-row { display: flex; align-items: center; gap: 12px; }
 .badge-row b { display: block; font-size: 14px; }
 .badge-row small { font-size: 12px; color: var(--muted); }
+.drop-row { display: grid; grid-template-columns: 64px 1fr; gap: 12px; align-items: center; }
+.drop-row .item { font-size: 30px; }
 .result .actions { padding: 10px 20px calc(10px + env(safe-area-inset-bottom, 0px)); display: grid; gap: 4px; }
 
-/* ---------- review / collection / profile ---------- */
+/* ---------- review / collection / profile / save ---------- */
 .hero-card { display: grid; justify-items: center; gap: 10px; text-align: center; padding: 22px 18px; }
 .hero-card .big { font-size: 50px; color: var(--c); }
 .hero-card h2 { font-family: var(--display); font-weight: 400; font-size: 24px; }
@@ -400,6 +572,10 @@ main#view { padding-inline: 16px; padding-block: 4px calc(var(--tabbar-h) + 28px
 .profile-head h2 { font-size: 19px; font-weight: 800; }
 .profile-head p { font-size: 13px; color: var(--muted); }
 .profile-head .xp { color: var(--gold); font-weight: 800; font-size: 14px; }
+.menu-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.menu-btn { display: flex; align-items: center; gap: 10px; padding: 14px; border-radius: 18px; background: var(--surface); box-shadow: var(--shadow); font-weight: 800; text-align: left; }
+.menu-btn .ic { font-size: 22px; color: var(--c); }
+.menu-btn small { display: block; font-size: 11px; color: var(--muted); font-weight: 700; }
 .week { display: grid; grid-template-columns: repeat(7, 1fr); align-items: end; gap: 8px; height: 150px; margin-top: 8px; }
 .week div { display: grid; justify-items: center; align-content: end; gap: 5px; height: 100%; }
 .week i { width: 100%; border-radius: 6px; background: var(--c, var(--track)); min-height: 6px; }
@@ -432,10 +608,22 @@ main#view { padding-inline: 16px; padding-block: 4px calc(var(--tabbar-h) + 28px
 .sync i.on { background: var(--good); }
 .danger { display: inline-flex; align-items: center; gap: 6px; color: var(--bad); font-weight: 800; font-size: 14px; padding: 6px 0; }
 .fineprint { font-size: 11.5px; color: var(--muted); text-align: center; padding-inline: 8px; }
+.save-card { display: grid; gap: 12px; }
+.save-card h3 { margin: 0; }
+.save-card p { font-size: 13px; color: var(--muted); }
+.codebox { width: 100%; min-height: 96px; padding: 10px 12px; border-radius: 12px; border: 2px solid var(--line); background: var(--surface-2); color: var(--ink); font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; word-break: break-all; resize: vertical; }
+.codebox:focus { outline: none; border-color: var(--accent); }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.filebtn { position: relative; overflow: hidden; }
+.filebtn input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.facts-list { display: grid; gap: 6px; font-size: 14px; }
+.facts-list div { display: flex; justify-content: space-between; gap: 12px; }
+.facts-list span:first-child { color: var(--muted); font-weight: 700; }
+.facts-list span:last-child { font-weight: 800; font-variant-numeric: tabular-nums; }
 
-/* ---------- sheet ---------- */
+/* ---------- sheet & toast ---------- */
 .sheet-wrap { position: fixed; inset: 0; z-index: 70; display: grid; align-items: end; justify-items: center; background: rgba(10, 8, 30, .45); animation: fade .2s; }
-.sheet { width: 100%; max-width: 560px; max-height: 86vh; overflow-y: auto; background: var(--surface); border-radius: 26px 26px 0 0; padding: 10px 20px calc(20px + env(safe-area-inset-bottom, 0px)); display: grid; gap: 14px; animation: slideup .25s cubic-bezier(.2, .9, .3, 1); }
+.sheet { width: 100%; max-width: 560px; max-height: 88vh; overflow-y: auto; background: var(--surface); border-radius: 26px 26px 0 0; padding: 10px 20px calc(20px + env(safe-area-inset-bottom, 0px)); display: grid; gap: 14px; animation: slideup .25s cubic-bezier(.2, .9, .3, 1); }
 .sheet .grab { width: 40px; height: 5px; border-radius: 3px; background: var(--line); justify-self: center; }
 .sheet .bar-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .sheet h2 { font-family: var(--display); font-weight: 400; font-size: 24px; line-height: 1.35; }
@@ -444,12 +632,30 @@ main#view { padding-inline: 16px; padding-block: 4px calc(var(--tabbar-h) + 28px
 .sheet .opt.ok { color: var(--good); font-weight: 800; }
 .boxed { padding: 12px 14px; border-radius: 14px; background: var(--surface-2); display: grid; gap: 4px; }
 .boxed small { font-size: 12px; font-weight: 800; color: var(--c, var(--good)); }
+.calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+.calendar div { display: grid; justify-items: center; gap: 2px; padding: 8px 2px; border-radius: 12px; background: var(--surface-2); font-size: 10.5px; font-weight: 800; text-align: center; line-height: 1.3; }
+.calendar div .e { font-size: 20px; }
+.calendar .got { opacity: .45; }
+.calendar .today { background: color-mix(in srgb, var(--gold) 25%, var(--surface)); outline: 2px solid var(--gold); animation: pop2 .4s; }
+.pick-list { display: grid; gap: 8px; }
+.pick { display: grid; grid-template-columns: 56px 1fr auto; gap: 12px; align-items: center; padding: 8px; border-radius: 14px; background: var(--surface-2); text-align: left; }
+.pick .item { font-size: 26px; }
+.pick b { display: block; font-size: 14px; }
+.pick small { font-size: 12px; color: var(--muted); font-weight: 700; }
+.pick.on { outline: 2px solid var(--accent); }
+.toast { position: fixed; left: 50%; top: calc(env(safe-area-inset-top, 0px) + 60px); z-index: 95; transform: translateX(-50%); padding: 10px 18px; border-radius: 99px; background: var(--ink); color: var(--paper); font-weight: 800; font-size: 14px; box-shadow: var(--shadow); animation: toast 2.4s forwards; pointer-events: none; white-space: nowrap; }
+@keyframes toast { 0% { opacity: 0; transform: translate(-50%, -10px); } 10%, 85% { opacity: 1; transform: translate(-50%, 0); } 100% { opacity: 0; transform: translate(-50%, -6px); } }
 @keyframes fade { from { opacity: 0; } }
 
-canvas#confetti { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 60; pointer-events: none; }
+canvas#confetti { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 90; pointer-events: none; }
 
+@media (max-width: 380px) {
+  .chip { padding: 0 6px; font-size: 11px; }
+  .topbar .wordmark { font-size: 15px; }
+}
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
+  .orb.after { opacity: 1; }
 }
 </style>
 </head>
@@ -462,6 +668,7 @@ canvas#confetti { position: fixed; inset: 0; width: 100%; height: 100%; z-index:
 </div>
 <nav class="tabbar" id="tabbar" aria-label="メニュー"></nav>
 <div id="quiz" class="quiz" hidden></div>
+<div id="summon" class="summon" hidden></div>
 <div id="sheet" class="sheet-wrap" hidden></div>
 <canvas id="confetti" hidden></canvas>
 
@@ -472,16 +679,17 @@ canvas#confetti { position: fixed; inset: 0; width: 100%; height: 100%; z-index:
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-const shuffle = (arr, rnd = Math.random) => {
+const fmt = (n) => Math.round(n).toLocaleString('ja-JP');
+const rnd = (a, b) => Math.round(a + Math.random() * (b - a));
+const shuffle = (arr, rng = Math.random) => {
   const a = arr.slice();
-  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rng() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
   return a;
 };
 
-// ---------------------------------------------------------------- icons
+// ================================================================ icons
 const ICONS = {
   heart: ['f', '<path d="M12 21s-7.4-4.5-9.5-9.1C1 8.5 3.1 4.6 6.9 4.6c2 0 3.6 1.1 4.4 2.6h1.4c.8-1.5 2.4-2.6 4.4-2.6 3.8 0 5.9 3.9 4.4 7.3C19.4 16.5 12 21 12 21z"/>'],
-  heartOff: ['s', '<path d="M12 20.5s-7.1-4.4-9.1-8.8C1.5 8.4 3.5 5 7 5c2 0 3.5 1.2 4.3 2.5h1.4C13.5 6.2 15 5 17 5c3.5 0 5.5 3.4 4.1 6.7-2 4.4-9.1 8.8-9.1 8.8z"/>'],
   star: ['f', '<path d="M12 2.6l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.2 1.2-6.5-4.8-4.6 6.6-.9z"/>'],
   flame: ['f', '<path d="M12.2 22c4.1 0 6.9-2.8 6.9-6.7 0-3.6-2.2-5.8-3.6-7.6-.3 1.6-1.2 2.8-2.5 3.3.3-3.4-1.2-6.8-4.4-9.4.2 3.3-1.5 5.5-3 7.5C4.2 11.1 5 12.8 5 15.3 5 19.2 8 22 12.2 22z"/>'],
   check: ['s', '<path d="M4.5 12.5l5 5L19.5 7"/>'],
@@ -506,7 +714,7 @@ const ICONS = {
   sparkle: ['f', '<path d="M12 2.5l2 6.1 6.1 2-6.1 2-2 6.1-2-6.1-6.1-2 6.1-2z"/><path d="M19 15.5l.9 2.3 2.3.9-2.3.9-.9 2.3-.9-2.3-2.3-.9 2.3-.9z"/>'],
   trash: ['s', '<path d="M4 7h16M9.5 7V4.5h5V7M6 7l1 13.5h10L18 7M10 11v6M14 11v6"/>'],
   flag: ['s', '<path d="M5.5 21V4M5.5 4.5H17l-2.2 4 2.2 4H5.5"/>'],
-  shield: ['s', '<path d="M12 3l7.5 2.8v5.7c0 4.7-3.2 7.9-7.5 9.5-4.3-1.6-7.5-4.8-7.5-9.5V5.8z"/><path d="M12 3v18"/>'],
+  shield: ['f', '<path d="M12 2.5l8 3v6.2c0 5-3.4 8.4-8 9.8-4.6-1.4-8-4.8-8-9.8V5.5z"/>'],
   calendar: ['s', '<rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/>'],
   search: ['s', '<circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/>'],
   info: ['s', '<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/>'],
@@ -515,10 +723,15 @@ const ICONS = {
   list: ['s', '<path d="M9 6h11M9 12h11M9 18h11M4.5 6h.5M4.5 12h.5M4.5 18h.5"/>'],
   brain: ['s', '<path d="M9 4.5a3 3 0 0 0-3 3 3 3 0 0 0-2 5.2A3 3 0 0 0 6.5 18 3 3 0 0 0 12 19.5V6a2.5 2.5 0 0 0-3-1.5zM15 4.5a3 3 0 0 1 3 3 3 3 0 0 1 2 5.2 3 3 0 0 1-2.5 5.3A3 3 0 0 1 12 19.5"/>'],
   cap: ['s', '<path d="M2.5 9.5L12 5l9.5 4.5L12 14z"/><path d="M6.5 11.5v4.3c1.4 1.4 3.4 2.2 5.5 2.2s4.1-.8 5.5-2.2v-4.3M21.5 9.5v5"/>'],
-  // 科目のアイコン
+  sword: ['s', '<path d="M14.5 3.5h6v6L10 20l-2.5.5L7 18z"/><path d="M5 14.5l4.5 4.5M3.5 20.5l3-3"/>'],
+  gift: ['s', '<rect x="3.5" y="8" width="17" height="4.5" rx="1"/><path d="M5 12.5V21h14v-8.5M12 8v13M12 8C10.5 4.5 7 4 7 6.2 7 8 12 8 12 8zM12 8c1.5-3.5 5-4 5-1.8C17 8 12 8 12 8z"/>'],
+  save: ['s', '<path d="M5 3.5h11l3.5 3.5v13.5H5z"/><path d="M8 3.5v5h7v-5M8 20.5v-6h8v6"/>'],
+  copy: ['s', '<rect x="8.5" y="8.5" width="12" height="12" rx="2"/><path d="M15.5 8.5v-3a2 2 0 0 0-2-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h3"/>'],
+  download: ['s', '<path d="M12 3.5v11M7 10l5 5 5-5M4.5 19.5h15"/>'],
+  upload: ['s', '<path d="M12 15.5v-11M7 9l5-5 5 5M4.5 19.5h15"/>'],
+  bulb: ['s', '<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.7.5 1.1 1.3 1.1 2.2h5c0-.9.4-1.7 1.1-2.2A6 6 0 0 0 12 3z"/>'],
   chart: ['s', '<path d="M4 4v16h16"/><path d="M7.5 15l4-4.5 3 3 5-6"/><path d="M15.5 7.5h4v4"/>'],
   yen: ['s', '<circle cx="12" cy="12" r="9"/><path d="M8.5 7l3.5 5 3.5-5M12 12v6M9 13h6M9 16h6"/>'],
-  bulb: ['s', '<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.7.5 1.1 1.3 1.1 2.2h5c0-.9.4-1.7 1.1-2.2A6 6 0 0 0 12 3z"/>'],
   gears: ['s', '<circle cx="12" cy="12" r="3"/><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M5.5 18.5l1.7-1.7M16.8 7.2l1.7-1.7"/><circle cx="12" cy="12" r="6.6"/>'],
   columns: ['s', '<path d="M3 9l9-5 9 5M5.5 9.5v8M9.8 9.5v8M14.2 9.5v8M18.5 9.5v8M3 20h18"/>'],
   desktop: ['s', '<rect x="3" y="4" width="18" height="12.5" rx="2"/><path d="M9 20.5h6M12 16.5v4"/>'],
@@ -528,15 +741,15 @@ const SYMBOL_ICON = {
   'chart.line.uptrend.xyaxis': 'chart', 'yensign.circle.fill': 'yen', 'lightbulb.fill': 'bulb', 'gearshape.2.fill': 'gears',
   'building.columns.fill': 'columns', 'desktopcomputer': 'desktop', 'building.2.fill': 'building',
 };
-function icon(name, cls = '') {
+function icon(name, cls = '', style = '') {
   const def = ICONS[name] || ICONS.star;
   const paint = def[0] === 'f'
     ? 'fill="currentColor" stroke="none"'
     : 'fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"';
-  return `<svg class="ic ${cls}" viewBox="0 0 24 24" ${paint} aria-hidden="true">${def[1]}</svg>`;
+  return `<svg class="ic ${cls}" viewBox="0 0 24 24" ${paint} ${style ? `style="${style}"` : ''} aria-hidden="true">${def[1]}</svg>`;
 }
 
-// ---------------------------------------------------------------- content
+// ================================================================ content
 const SUBJECTS = JSON.parse($('#sq-content').textContent).sort((a, b) => a.order - b.order);
 const SUBJ = {}, STAGE = {}, QREF = {};
 const ALL_Q = [], ALL_CARDS = [], ALL_STAGES = [];
@@ -556,7 +769,7 @@ const subjectQuestions = (s) => s.stages.flatMap((st) => st.questions);
 const themeVar = (key) => `var(--w-${key})`;
 const TYPE_LABEL = { choice: '4択', tf: '○×', order: '並べ替え' };
 
-// ---------------------------------------------------------------- levels & dates
+// ================================================================ levels & dates
 const xpToNext = (lv) => 80 + (lv - 1) * 40;
 function levelStatus(xp) {
   let lv = 1, rest = Math.max(0, xp);
@@ -569,16 +782,30 @@ const titleFor = (lv) => TITLES.filter((t) => lv >= t[0]).pop()[1];
 const pad2 = (n) => String(n).padStart(2, '0');
 const dayKey = (d) => `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
 const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+const fmtDate = (ms) => { const d = new Date(ms); return `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()} ${pad2(d.getHours())}:${pad2(d.getMinutes())}`; };
 const REVIEW_DAYS = [0, 1, 3, 7, 14];
 const GRADUATE = 5;
+function hashSeed(str) {
+  let h = 2166136261;
+  for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
+  return h >>> 0;
+}
+function mulberry(seed) {
+  let a = seed;
+  return () => { a |= 0; a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+}
 
-// ---------------------------------------------------------------- persistence
+// ================================================================ persistence
 const LS_KEY = 'shindan-quest.progress.v1';
 const DEFAULTS = {
   xp: 0, stageStars: {}, readLessons: [], defeatedBosses: [], questionStats: {}, badges: {},
   streak: 0, longestStreak: 0, lastActiveDay: null, dailyXP: {}, dailyChallengeDay: null, dailyChallengeCount: 0,
   timeAttackBest: 0, totalAnswered: 0, totalCorrect: 0, maxCombo: 0, perfectClears: 0, reviewCorrect: 0,
   dailyGoal: 50, sound: true, savedAt: 0,
+  // RPG
+  gold: 0, gems: 0, tickets: 0, items: {}, equip: { weapon: null, armor: null, acc1: null, acc2: null },
+  pity: 0, totalPulls: 0, bossLevels: {}, loginDays: 0, lastLoginDay: null,
+  missions: { day: null, correct: 0, clears: 0, boss: 0, claimed: [] }, welcomeGiven: false, chests: 0,
 };
 function normalize(raw) {
   const d = JSON.parse(JSON.stringify(DEFAULTS));
@@ -586,13 +813,18 @@ function normalize(raw) {
     for (const k of Object.keys(DEFAULTS)) if (raw[k] !== undefined && raw[k] !== null) d[k] = raw[k];
   }
   for (const k of ['readLessons', 'defeatedBosses']) if (!Array.isArray(d[k])) d[k] = [];
-  for (const k of ['stageStars', 'questionStats', 'badges', 'dailyXP']) if (typeof d[k] !== 'object' || Array.isArray(d[k])) d[k] = {};
+  for (const k of ['stageStars', 'questionStats', 'badges', 'dailyXP', 'items', 'bossLevels']) if (typeof d[k] !== 'object' || Array.isArray(d[k])) d[k] = {};
+  if (typeof d.equip !== 'object' || Array.isArray(d.equip)) d.equip = { ...DEFAULTS.equip };
+  for (const slot of Object.keys(DEFAULTS.equip)) if (!(slot in d.equip)) d.equip[slot] = null;
+  if (typeof d.missions !== 'object' || !Array.isArray(d.missions.claimed)) d.missions = { ...DEFAULTS.missions, claimed: [] };
+  for (const k of ['gold', 'gems', 'tickets', 'xp']) d[k] = Math.max(0, Number(d[k]) || 0);
   return d;
 }
 function loadLocal() {
   try { return normalize(JSON.parse(localStorage.getItem(LS_KEY) || 'null')); } catch (e) { return normalize(null); }
 }
 let S = loadLocal();
+const bootSavedAt = S.savedAt;
 function saveLocal() {
   try { localStorage.setItem(LS_KEY, JSON.stringify(S)); } catch (e) { /* 保存できない環境でも遊べる */ }
 }
@@ -603,9 +835,10 @@ function persist() {
 }
 
 // claude.ai 上では、閲覧者ごとの非公開領域にも保存する
-const cloud = { ref: null, status: 'local', dirty: false, busy: false, timer: 0 };
+const inArtifact = !!(window.claude && typeof window.claude.use === 'function');
+const cloud = { ref: null, dirty: false, busy: false, timer: 0 };
 async function connectCloud() {
-  if (!window.claude || typeof window.claude.use !== 'function') return;
+  if (!inArtifact) return;
   try {
     const [db, user] = await Promise.all([window.claude.use('db'), window.claude.use('user')]);
     if (!db || !user) return;
@@ -614,10 +847,9 @@ async function connectCloud() {
     const ref = db.doc(`data/users/${uid}/progress`);
     const snap = await ref.get();
     cloud.ref = ref;
-    cloud.status = 'cloud';
     if (snap.exists) {
       const remote = normalize(snap.data());
-      if ((remote.savedAt || 0) > (S.savedAt || 0)) {
+      if ((remote.savedAt || 0) > (S.savedAt || 0) || bootSavedAt === 0) {
         S = remote;
         saveLocal();
         render();
@@ -630,7 +862,6 @@ async function connectCloud() {
     renderSyncStatus();
   } catch (e) {
     cloud.ref = null;
-    cloud.status = 'local';
   }
 }
 function queueCloud() {
@@ -645,14 +876,12 @@ async function flushCloud() {
   cloud.dirty = false;
   try {
     await cloud.ref.set(JSON.parse(JSON.stringify(S)));
-    cloud.status = 'cloud';
   } catch (e) {
     if (e && e.code === 'unavailable') {
       cloud.dirty = true;
       setTimeout(flushCloud, 2500 + Math.random() * 2500);
     } else {
       cloud.ref = null;
-      cloud.status = 'local';
     }
   } finally {
     cloud.busy = false;
@@ -662,7 +891,235 @@ async function flushCloud() {
 }
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') flushCloud(); });
 
-// ---------------------------------------------------------------- game rules
+// ================================================================ equipment catalog
+const RANK = { N: 0, R: 1, SR: 2, SSR: 3, UR: 4 };
+const RARITY = {
+  N: { rate: 50, maxLv: 10, cost: 1, dupe: { gold: 80 } },
+  R: { rate: 32, maxLv: 20, cost: 1.6, dupe: { gold: 250 } },
+  SR: { rate: 13, maxLv: 30, cost: 2.6, dupe: { gems: 20 } },
+  SSR: { rate: 4.5, maxLv: 40, cost: 4, dupe: { gems: 100 } },
+  UR: { rate: 0.5, maxLv: 50, cost: 6, dupe: { gems: 300 } },
+};
+const MAX_LB = 5, LB_LV = 5;
+const TYPE_NAME = { weapon: '武器', armor: '防具', acc: 'アクセサリー' };
+const ITEM_LIST = [
+  // 武器
+  ['w01', 'weapon', 'N', '✏️', '赤ペン', 'atk', '添削の基本。まずはここから。'],
+  ['w02', 'weapon', 'N', '🖍️', '蛍光マーカー', 'atk', '重要語句を塗りつぶす一撃。'],
+  ['w03', 'weapon', 'N', '📏', '定規ソード', 'atk', 'まっすぐ切り込む。線も引ける。'],
+  ['w04', 'weapon', 'N', '🗒️', '付箋ダガー', 'atk', '貼って剥がせる早業。'],
+  ['w05', 'weapon', 'R', '🧮', '電卓ブレード', 'atk', '2次試験で解禁される頼れる刃。'],
+  ['w06', 'weapon', 'R', '🖊️', '三色ボールペン', 'atk', '赤・青・黒で論点を切り分ける。'],
+  ['w07', 'weapon', 'R', '🔦', 'レーザーポインター', 'atk', 'プレゼンの急所を撃ち抜く。'],
+  ['w08', 'weapon', 'R', '📐', '分度器スピア', 'atk', '角度をつけた提案が刺さる。'],
+  ['w09', 'weapon', 'SR', '⚔️', 'SWOTの剣', 'atk', '強み×機会で道を切り開く。'],
+  ['w10', 'weapon', 'SR', '🔱', 'ROEランス', 'atk', '自己資本を貫く高効率の槍。'],
+  ['w11', 'weapon', 'SR', '🔨', 'PPMハンマー', 'atk', '負け犬事業を叩き直す。'],
+  ['w12', 'weapon', 'SR', '🏹', '損益分岐ボウ', 'atk', '分岐点を越えた先を射抜く。'],
+  ['w13', 'weapon', 'SSR', '🗡️', 'ファイブフォースの大剣', 'atk', '5つの競争要因をまとめて薙ぎ払う。'],
+  ['w14', 'weapon', 'SSR', '⛓️', 'バリューチェーンの鎖鎌', 'atk', '活動の連鎖で敵を絡め取る。'],
+  ['w15', 'weapon', 'SSR', '🪓', 'デュポン分解の戦斧', 'atk', 'ROEを分解し、弱点を暴く。'],
+  ['w16', 'weapon', 'UR', '🌟', '事業再構築の聖剣', 'atk', 'すべてを作り替える、選ばれし者の剣。'],
+  ['w17', 'weapon', 'UR', '🖋️', '伝説の診断士の万年筆', 'atk', 'その一筆が企業を救う。'],
+  // 防具
+  ['a01', 'armor', 'N', '👔', 'クールビズシャツ', 'hp', '夏場の長期戦に強い。'],
+  ['a02', 'armor', 'N', '🪪', '社員証', 'hp', '身分を証明するささやかな守り。'],
+  ['a03', 'armor', 'N', '⛑️', '安全ヘルメット', 'hp', '5Sの現場では必須装備。'],
+  ['a04', 'armor', 'R', '🕴️', 'リクルートスーツ', 'hp', '着慣れないが気合いは入る。'],
+  ['a05', 'armor', 'R', '🦺', '反射ベスト', 'hp', '現場巡回で存在を示す。'],
+  ['a06', 'armor', 'R', '🧤', '作業用手袋', 'hp', 'カイゼンの手を守る。'],
+  ['a07', 'armor', 'SR', '📜', '定款の鎧', 'hp', '会社の根本規則が身を守る。'],
+  ['a08', 'armor', 'SR', '🛡️', '内部統制の盾', 'hp', '不正の一撃を受け流す。'],
+  ['a09', 'armor', 'SR', '🧥', 'BCPマント', 'hp', '非常時でも事業を止めない。'],
+  ['a10', 'armor', 'SSR', '🏰', 'コンプライアンスアーマー', 'hp', '法令順守の堅牢な鎧。'],
+  ['a11', 'armor', 'SSR', '🏛️', 'ガバナンスの大盾', 'hp', '取締役会の監督が守りを固める。'],
+  ['a12', 'armor', 'UR', '👑', '中小企業基本法の神鎧', 'hp', '中小企業政策の憲法をまとう。'],
+  // アクセサリー
+  ['c01', 'acc', 'N', '📎', 'ホッチキス', 'gold', '書類も稼ぎもまとめて留める。'],
+  ['c02', 'acc', 'N', '🏷️', '付箋セット', 'xp', '覚えたことを貼っておける。'],
+  ['c03', 'acc', 'N', '💼', '名刺入れ', 'luck', '出会いが幸運を呼ぶ。'],
+  ['c04', 'acc', 'N', '⌚', '腕時計', 'time', '時間管理は社会人の基本。'],
+  ['c05', 'acc', 'R', '📰', '日経新聞', 'xp', '毎朝の習慣が知識になる。'],
+  ['c06', 'acc', 'R', '📕', '電子辞書', 'hint', '困ったときの頼れる相棒。'],
+  ['c07', 'acc', 'R', '📒', '手帳', 'gold', '予定も収支もこの一冊で。'],
+  ['c08', 'acc', 'R', '🥤', '栄養ドリンク', 'time', 'あと少し、踏ん張れる。'],
+  ['c09', 'acc', 'SR', '📘', '中小企業白書', 'xp', '数字で見る中小企業の今。'],
+  ['c10', 'acc', 'SR', '📚', '過去問集', 'hint', '出題パターンが見えてくる。'],
+  ['c11', 'acc', 'SR', '🎖️', '経営指導員バッジ', 'luck', '商工会の頼れる仲間の証。'],
+  ['c12', 'acc', 'SR', '🐈', '招き猫', 'gold', '商売繁盛の定番。'],
+  ['c13', 'acc', 'SSR', '⏱️', '試験用ストップウォッチ', 'time', '残り時間を味方にする。'],
+  ['c14', 'acc', 'SSR', '🎧', '集中ヘッドホン', 'crit', '雑音を消し、急所を見抜く。'],
+  ['c15', 'acc', 'SSR', '🧧', '合格祈願のお守り', 'xp', '努力は必ず報われる。'],
+  ['c16', 'acc', 'UR', '🏅', '金の診断士バッジ', 'all', '合格者だけが手にする輝き。'],
+];
+const ITEMS = ITEM_LIST.map(([id, type, rarity, emoji, name, kind, flavor]) => ({ id, type, rarity, emoji, name, kind, flavor }));
+const ITEM = Object.fromEntries(ITEMS.map((i) => [i.id, i]));
+const BASE = {
+  atk: { N: 40, R: 70, SR: 120, SSR: 200, UR: 320 },
+  hp: { N: 60, R: 100, SR: 170, SSR: 280, UR: 450 },
+  xp: { N: 3, R: 5, SR: 8, SSR: 12, UR: 10 },
+  gold: { N: 6, R: 10, SR: 16, SSR: 24, UR: 20 },
+  luck: { N: 5, R: 8, SR: 12, SSR: 18, UR: 15 },
+  crit: { N: 5, R: 8, SR: 12, SSR: 15, UR: 12 },
+  time: { N: 2, R: 3, SR: 5, SSR: 8, UR: 6 },
+  hint: { N: 1, R: 1, SR: 2, SSR: 2, UR: 2 },
+  wcrit: { SR: 3, SSR: 6, UR: 10 },
+  shield: { SR: 1, SSR: 1, UR: 2 },
+};
+const STAT_LABEL = { atk: '攻撃力', hp: 'HP', shield: '盾', crit: '会心率', xp: '獲得XP', gold: '獲得ゴールド', luck: '幸運', time: 'タイムアタック', hint: 'ヒント' };
+const statText = (k, v) => ['xp', 'gold', 'luck', 'crit'].includes(k) ? `+${v}%` : k === 'time' ? `+${v}秒` : k === 'hint' ? `${v}回` : k === 'shield' ? `${v}枚` : `+${fmt(v)}`;
+function itemStats(item, lv, lb) {
+  const r = item.rarity, grow = 1 + 0.08 * (lv - 1), lbMul = 1 + 0.15 * lb;
+  const pct = (base) => Math.round(base * (1 + 0.04 * (lv - 1)) * (1 + 0.1 * lb) * 10) / 10;
+  const out = {};
+  if (item.kind === 'atk') { out.atk = Math.round(BASE.atk[r] * grow * lbMul); if (BASE.wcrit[r]) out.crit = pct(BASE.wcrit[r]); }
+  if (item.kind === 'hp') { out.hp = Math.round(BASE.hp[r] * grow * lbMul); if (BASE.shield[r]) out.shield = BASE.shield[r] + (lb >= 5 ? 1 : 0); }
+  if (['xp', 'gold', 'luck', 'crit'].includes(item.kind)) out[item.kind] = pct(BASE[item.kind][r]);
+  if (item.kind === 'time') out.time = BASE.time[r] + Math.floor((lv - 1) / 10) + (lb >= 3 ? 1 : 0);
+  if (item.kind === 'hint') out.hint = BASE.hint[r] + (lb >= 3 ? 1 : 0);
+  if (item.kind === 'all') { out.xp = pct(BASE.xp.UR); out.gold = pct(BASE.gold.UR); out.luck = pct(BASE.luck.UR); }
+  return out;
+}
+const SLOTS = ['weapon', 'armor', 'acc1', 'acc2'];
+const SLOT_NAME = { weapon: '武器', armor: '防具', acc1: 'アクセ1', acc2: 'アクセ2' };
+const slotType = (slot) => slot.startsWith('acc') ? 'acc' : slot;
+function playerStats() {
+  const s = { atk: 100, hp: 300, shield: 0, crit: 10, xp: 0, gold: 0, luck: 0, time: 0, hint: 0 };
+  for (const slot of SLOTS) {
+    const id = S.equip[slot], own = id && S.items[id];
+    if (!own || !ITEM[id]) continue;
+    const st = itemStats(ITEM[id], own.lv, own.lb);
+    for (const k in st) s[k] += st[k];
+  }
+  s.crit = Math.min(60, Math.round(s.crit * 10) / 10);
+  for (const k of ['xp', 'gold', 'luck']) s[k] = Math.round(s[k] * 10) / 10;
+  s.power = Math.round(s.atk * 3 + s.hp * 2 + s.crit * 20 + (s.xp + s.gold + s.luck) * 15 + s.shield * 300 + s.hint * 200 + s.time * 40);
+  return s;
+}
+const maxLv = (id) => RARITY[ITEM[id].rarity].maxLv + LB_LV * (S.items[id] ? S.items[id].lb : 0);
+const enhanceCost = (id) => Math.round(RARITY[ITEM[id].rarity].cost * (40 + 20 * S.items[id].lv));
+function enhance(id, times) {
+  const r = { done: 0, great: 0, super: 0, spent: 0, before: S.items[id].lv };
+  for (let i = 0; i < times; i++) {
+    const own = S.items[id];
+    if (own.lv >= maxLv(id)) break;
+    const cost = enhanceCost(id);
+    if (S.gold < cost) break;
+    S.gold -= cost; r.spent += cost;
+    const roll = Math.random();
+    let up = 1;
+    if (roll < 0.03) { up = 3; r.super++; } else if (roll < 0.15) { up = 2; r.great++; }
+    own.lv = Math.min(maxLv(id), own.lv + up);
+    r.done++;
+  }
+  r.after = S.items[id].lv;
+  persist();
+  return r;
+}
+function equipItem(slot, id) {
+  if (id) for (const s of SLOTS) if (S.equip[s] === id) S.equip[s] = null;
+  S.equip[slot] = id;
+  persist();
+}
+const equippedSlot = (id) => SLOTS.find((s) => S.equip[s] === id) || null;
+const ownedCount = () => Object.keys(S.items).filter((id) => ITEM[id]).length;
+const newItemCount = () => Object.entries(S.items).filter(([id, o]) => ITEM[id] && o.isNew).length;
+
+// ================================================================ gacha & rewards
+const COST_1 = 150, COST_10 = 1500, PITY = 60;
+const RATE_TABLE = [['UR', 0.5], ['SSR', 4.5], ['SR', 13], ['R', 32], ['N', 50]];
+function rollRarity(minRank) {
+  const allowed = RATE_TABLE.filter(([r]) => RANK[r] >= minRank);
+  let x = Math.random() * allowed.reduce((n, [, p]) => n + p, 0);
+  for (const [r, p] of allowed) { if (x < p) return r; x -= p; }
+  return allowed[allowed.length - 1][0];
+}
+const pickupFor = (d = new Date()) => { const pool = ITEMS.filter((i) => i.rarity === 'SSR'); return pool[hashSeed('pickup' + dayKey(d)) % pool.length]; };
+function rollItem(rarity) {
+  if (rarity === 'SSR' && Math.random() < 0.5) return pickupFor();
+  const pool = ITEMS.filter((i) => i.rarity === rarity);
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+function grantItem(item) {
+  const own = S.items[item.id];
+  if (!own) { S.items[item.id] = { lv: 1, lb: 0, got: 1, isNew: true }; return { item, isNew: true }; }
+  own.got = (own.got || 1) + 1;
+  if (own.lb < MAX_LB) { own.lb++; return { item, lbUp: own.lb }; }
+  const d = RARITY[item.rarity].dupe;
+  S.gold += d.gold || 0;
+  S.gems += d.gems || 0;
+  return { item, convert: d };
+}
+function summon(n, pay) {
+  if (pay === 'gems') { const cost = n === 10 ? COST_10 : COST_1 * n; if (S.gems < cost) return null; S.gems -= cost; }
+  else { if (S.tickets < n) return null; S.tickets -= n; }
+  const out = [];
+  let hasSR = false;
+  for (let i = 0; i < n; i++) {
+    let min = 0;
+    if (S.pity >= PITY - 1) min = 3;
+    if (n === 10 && i === n - 1 && !hasSR) min = Math.max(min, 2);
+    const rarity = rollRarity(min);
+    if (RANK[rarity] >= 2) hasSR = true;
+    if (RANK[rarity] >= 3) S.pity = 0; else S.pity++;
+    S.totalPulls++;
+    out.push({ rarity, ...grantItem(rollItem(rarity)) });
+  }
+  persist();
+  return out;
+}
+const CHESTS = [
+  { name: '銅の宝箱', color: '#C07A3F' },
+  { name: '銀の宝箱', color: '#9FB0C4' },
+  { name: '金の宝箱', color: '#F2B400' },
+  { name: '虹の宝箱', color: '#FF4F9A', rainbow: true },
+];
+function rollChest(minTier, luck) {
+  const boost = 1 + luck / 100;
+  const w = [60, 30 * boost, 9 * boost, 1 * boost * boost];
+  for (let i = 0; i < minTier; i++) w[i] = 0;
+  let x = Math.random() * w.reduce((a, b) => a + b, 0), tier = 3;
+  for (let i = 0; i < 4; i++) { if (x < w[i]) { tier = i; break; } x -= w[i]; }
+  const loot = [
+    () => ({ gold: rnd(100, 200) }),
+    () => ({ gold: rnd(300, 500), gems: rnd(10, 30) }),
+    () => ({ gold: rnd(800, 1200), gems: rnd(50, 100), tickets: Math.random() < 0.3 ? 1 : 0 }),
+    () => ({ gold: rnd(2000, 3000), gems: 300, tickets: 2 }),
+  ][tier]();
+  return { tier, ...loot };
+}
+function applyLoot(l) { S.gold += l.gold || 0; S.gems += l.gems || 0; S.tickets += l.tickets || 0; }
+const lootChips = (l) => [l.gold ? `<span>🪙 ${fmt(l.gold)}</span>` : '', l.gems ? `<span>💎 ${fmt(l.gems)}</span>` : '', l.tickets ? `<span>🎫 ${fmt(l.tickets)}</span>` : ''].join('');
+const LOGIN = [{ gems: 100 }, { gold: 3000 }, { gems: 150 }, { tickets: 1 }, { gems: 200 }, { gold: 5000 }, { tickets: 3, gems: 300 }];
+const lootLabel = (l) => [l.gems ? `💎${l.gems}` : '', l.gold ? `🪙${fmt(l.gold)}` : '', l.tickets ? `🎫${l.tickets}` : ''].filter(Boolean).join(' ');
+const MISSIONS = [
+  { id: 'correct', text: '問題に10問正解する', goal: 10, reward: { gems: 50 } },
+  { id: 'clears', text: 'ステージを2回クリアする', goal: 2, reward: { gems: 50 } },
+  { id: 'boss', text: 'ボスに1回挑戦する', goal: 1, reward: { gems: 80 } },
+];
+const ALL_MISSION_REWARD = { tickets: 1 };
+function missions() {
+  const today = dayKey(new Date());
+  if (!S.missions || S.missions.day !== today) S.missions = { day: today, correct: 0, clears: 0, boss: 0, claimed: [] };
+  return S.missions;
+}
+function bumpMission(key, n = 1) { const m = missions(); m[key] = (m[key] || 0) + n; }
+function claimable() {
+  const m = missions();
+  const list = MISSIONS.filter((d) => m[d.id] >= d.goal && !m.claimed.includes(d.id)).map((d) => d.id);
+  if (MISSIONS.every((d) => m.claimed.includes(d.id)) && !m.claimed.includes('all')) list.push('all');
+  return list;
+}
+function claimMission(id) {
+  if (!claimable().includes(id)) return null;
+  const reward = id === 'all' ? ALL_MISSION_REWARD : MISSIONS.find((d) => d.id === id).reward;
+  applyLoot(reward);
+  missions().claimed.push(id);
+  persist();
+  return reward;
+}
+
+// ================================================================ game rules
 const stars = (id) => S.stageStars[id] || 0;
 const cleared = (id) => stars(id) > 0;
 const isUnlocked = (st) => st.index === 0 || cleared(SUBJ[st.subjectId].stages[st.index - 1].id);
@@ -673,6 +1130,9 @@ const starTotals = (s) => ({ earned: s.stages.reduce((n, st) => n + stars(st.id)
 const clearedCount = (s) => s.stages.filter((st) => cleared(st.id)).length;
 const cardUnlocked = (c) => cleared(c.stageId);
 const todayXP = (now = new Date()) => S.dailyXP[dayKey(now)] || 0;
+const bossLevel = (s) => S.bossLevels[s.id] || 1;
+const bossMaxHP = (s, lv) => Math.round(800 * (1 + 0.1 * (s.order - 1)) * (1 + 0.35 * (lv - 1)));
+const bossAtk = (lv) => Math.round(100 * (1 + 0.25 * (lv - 1)));
 
 function registerActivity(now) {
   const today = dayKey(now);
@@ -775,7 +1235,8 @@ function accuracy(s) {
   return n ? c / n : null;
 }
 
-// バッジ
+// バッジ（獲得ごとに 💎100）
+const ownsRarity = (r) => Object.keys(S.items).some((id) => ITEM[id] && RANK[ITEM[id].rarity] >= RANK[r]);
 const BADGES = [
   ['first_clear', 'はじめの一歩', 'ステージを初めてクリアする', 'flag', () => Object.values(S.stageStars).some((v) => v > 0)],
   ['perfect', 'パーフェクト', 'ノーミスでステージをクリアする', 'sparkle', () => S.perfectClears >= 1],
@@ -791,7 +1252,13 @@ const BADGES = [
   ['daily10', '毎日コツコツ', 'デイリーチャレンジを10回クリアする', 'sun', () => S.dailyChallengeCount >= 10],
   ['speed10', 'スピードスター', 'タイムアタックで10問正解する', 'watch', () => S.timeAttackBest >= 10],
   ['boss1', 'ボスハンター', 'ボスを初めて倒す', 'shield', () => S.defeatedBosses.length > 0],
+  ['boss_lv5', '周回の鬼', 'いずれかのボスをLv5まで育てる', 'bolt', () => Object.values(S.bossLevels).some((v) => v >= 6)],
   ['level10', 'ベテラン受験生', 'レベル10に到達する', 'star', () => levelStatus(S.xp).level >= 10],
+  ['summon1', 'はじめての召喚', '装備を召喚する', 'sparkle', () => S.totalPulls >= 1],
+  ['ssr', '輝く一振り', 'SSR以上の装備を手に入れる', 'star', () => ownsRarity('SSR')],
+  ['ur', '伝説との出会い', 'URの装備を手に入れる', 'crown', () => ownsRarity('UR')],
+  ['arsenal', 'コレクター', '装備を20種類集める', 'sword', () => ownedCount() >= 20],
+  ['maxlv', '匠の技', '装備を最大レベルまで強化する', 'bolt', () => Object.keys(S.items).some((id) => ITEM[id] && S.items[id].lv >= maxLv(id))],
   ...SUBJECTS.map((s) => [`master_${s.id}`, `${s.worldName} 制覇`, `${s.shortTitle}の全ステージとボスをクリアする`, s.icon,
     () => bossDefeated(s) && s.stages.every((st) => cleared(st.id))]),
   ['all_bosses', '七冠王', 'すべてのボスを倒す', 'crown', () => SUBJECTS.every(bossDefeated)],
@@ -802,11 +1269,12 @@ function evaluateBadges(now = new Date()) {
   const fresh = BADGES.filter((b) => !S.badges[b.id] && b.test());
   if (!fresh.length) return [];
   for (const b of fresh) S.badges[b.id] = now.getTime();
+  S.gems += 100 * fresh.length;
   persist();
   return fresh;
 }
 
-// ---------------------------------------------------------------- sound
+// ================================================================ sound
 let audio = null;
 function sfx(kind) {
   if (!S.sound) return;
@@ -819,6 +1287,9 @@ function sfx(kind) {
       bad: [[196, 0, .16], [165, .1, .22]],
       win: [[523, 0, .14], [659, .1, .14], [784, .2, .14], [1047, .3, .3]],
       hit: [[330, 0, .08], [220, .05, .1]],
+      coin: [[1319, 0, .08], [1760, .06, .14]],
+      rare: [[784, 0, .14], [988, .12, .14], [1175, .24, .14], [1568, .36, .4]],
+      up: [[523, 0, .08], [784, .07, .12]],
     }[kind] || [];
     const t0 = audio.currentTime;
     for (const [freq, at, len] of tunes) {
@@ -835,47 +1306,42 @@ function sfx(kind) {
   } catch (e) { /* 音が出せない環境 */ }
 }
 
-// ---------------------------------------------------------------- quiz engine
-function hashSeed(str) {
-  let h = 2166136261;
-  for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
-  return h >>> 0;
-}
-function mulberry(seed) {
-  let a = seed;
-  return () => { a |= 0; a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
-}
+// ================================================================ quiz engine
 const isCorrect = (q, a) => {
   if (q.type === 'choice') return a.i === q.answer;
   if (q.type === 'tf') return a.v === q.answer;
   return a.items.length === q.items.length && a.items.every((x, i) => x === q.items[i]);
 };
 const correctText = (q) => q.type === 'choice' ? q.options[q.answer] : q.type === 'tf' ? (q.answer ? '○（正しい）' : '×（誤り）') : q.items.join(' → ');
-const HEARTS = 3, BOSS_HP = 10, DAILY_N = 5, REVIEW_N = 10, TIME_LIMIT = 60;
+const HEARTS = 3, DAILY_N = 5, REVIEW_N = 10, TIME_LIMIT = 60;
 
 function makeQuiz(mode, arg) {
-  const now = new Date();
+  const now = new Date(), stats = playerStats();
   let questions = [], pool = [], title = '', theme = 'indigo', subject = null, hearts = null, timeLimit = null;
   if (mode === 'stage') {
     const st = STAGE[arg]; if (!st) return null;
     subject = SUBJ[st.subjectId]; questions = shuffle(st.questions); title = st.title; theme = subject.theme; hearts = HEARTS;
   } else if (mode === 'boss') {
     subject = SUBJ[arg]; if (!subject) return null;
-    questions = shuffle(subjectQuestions(subject)); pool = questions; title = subject.boss.name; theme = subject.theme; hearts = HEARTS;
+    questions = shuffle(subjectQuestions(subject)); pool = questions; title = subject.boss.name; theme = subject.theme;
   } else if (mode === 'daily') {
     questions = shuffle(ALL_Q, mulberry(hashSeed(dayKey(now)))).slice(0, DAILY_N); title = 'デイリーチャレンジ'; theme = 'gold';
   } else if (mode === 'review') {
     questions = shuffle(dueReview(now.getTime()).slice(0, REVIEW_N)); title = '復習'; theme = 'green';
   } else if (mode === 'time') {
-    questions = shuffle(ALL_Q.filter((q) => q.type !== 'order')); pool = questions; title = 'タイムアタック'; theme = 'indigo'; timeLimit = TIME_LIMIT;
+    questions = shuffle(ALL_Q.filter((q) => q.type !== 'order')); pool = questions; title = 'タイムアタック'; theme = 'indigo'; timeLimit = TIME_LIMIT + stats.time;
   }
   if (!questions.length) return null;
+  const bossLv = subject ? bossLevel(subject) : 1;
+  const bossHP = mode === 'boss' ? bossMaxHP(subject, bossLv) : 0;
   const quiz = {
-    mode, arg, title, theme, subject, maxHearts: hearts, hearts: hearts || 0, timeLimit, remaining: timeLimit || 0,
+    mode, arg, title, theme, subject, stats, maxHearts: hearts, hearts: hearts || 0, timeLimit, remaining: timeLimit || 0,
     total: questions.length, queue: questions.slice(1), pool, current: null, phase: 'answering', feedback: null,
-    combo: 0, maxCombo: 0, answered: 0, correct: 0, wrong: 0, xp: 0, bossHP: BOSS_HP, cleared: new Set(),
+    combo: 0, maxCombo: 0, answered: 0, correct: 0, wrong: 0, xp: 0, gold: 0, cleared: new Set(),
+    shields: mode === 'stage' || mode === 'boss' ? stats.shield : 0, hints: stats.hint, removed: [],
+    bossLv, bossHP, bossMaxHP: bossHP, bossAtk: bossAtk(bossLv), playerHP: stats.hp, playerMaxHP: stats.hp,
     levelBefore: levelStatus(S.xp).level, turn: 0, choiceOrder: [], shuffled: [], picked: [], summary: null,
-    startedAt: 0, confirmQuit: false, lastHit: 0,
+    startedAt: 0, confirmQuit: false, chestOpened: false,
   };
   present(quiz, questions[0]);
   return quiz;
@@ -886,12 +1352,20 @@ function present(quiz, q) {
   quiz.feedback = null;
   quiz.phase = 'answering';
   quiz.picked = [];
+  quiz.removed = [];
   if (q.type === 'choice') quiz.choiceOrder = shuffle(q.options.map((_, i) => i));
   if (q.type === 'order') {
     let s = shuffle(q.items);
     while (q.items.length > 1 && s.every((x, i) => x === q.items[i])) s = shuffle(q.items);
     quiz.shuffled = s;
   }
+}
+function useHint(quiz) {
+  const q = quiz.current;
+  if (quiz.hints <= 0 || q.type !== 'choice' || quiz.removed.length || quiz.phase !== 'answering') return;
+  const wrong = shuffle(q.options.map((_, i) => i).filter((i) => i !== q.answer));
+  quiz.removed = wrong.slice(0, Math.min(2, q.options.length - 2));
+  quiz.hints--;
 }
 function pendingOutcome(quiz) {
   switch (quiz.mode) {
@@ -901,7 +1375,7 @@ function pendingOutcome(quiz) {
       break;
     case 'boss':
       if (quiz.bossHP === 0) return { kind: 'bossDefeated' };
-      if (quiz.hearts === 0) return { kind: 'bossLost' };
+      if (quiz.playerHP === 0) return { kind: 'bossLost' };
       break;
     case 'daily': if (!quiz.queue.length) return { kind: 'dailyDone' }; break;
     case 'review': if (!quiz.queue.length) return { kind: 'reviewDone' }; break;
@@ -911,32 +1385,44 @@ function pendingOutcome(quiz) {
 }
 function submit(quiz, answer) {
   if (quiz.phase !== 'answering') return;
-  const q = quiz.current, ok = isCorrect(q, answer), now = new Date();
-  let gained = 0, critical = false;
+  const q = quiz.current, ok = isCorrect(q, answer), now = new Date(), st = quiz.stats;
+  const fb = { answer, ok, xp: 0, gold: 0, critical: false, dmg: 0, shielded: false, taken: 0 };
   quiz.answered++;
   if (ok) {
     quiz.correct++;
     quiz.combo++;
     quiz.maxCombo = Math.max(quiz.maxCombo, quiz.combo);
     quiz.cleared.add(q.id);
-    gained = quiz.mode === 'time' ? 5 : (10 + (quiz.combo >= 3 ? 5 : 0)) * (quiz.mode === 'daily' ? 2 : 1);
+    const baseXP = quiz.mode === 'time' ? 5 : (10 + (quiz.combo >= 3 ? 5 : 0)) * (quiz.mode === 'daily' ? 2 : 1);
+    fb.xp = Math.round(baseXP * (1 + st.xp / 100));
+    const baseGold = quiz.mode === 'time' ? 5 : quiz.mode === 'daily' ? 20 : 10;
+    fb.gold = Math.round(baseGold * (1 + st.gold / 100));
+    S.gold += fb.gold;
+    quiz.gold += fb.gold;
+    bumpMission('correct');
     if (quiz.mode === 'boss') {
-      critical = quiz.combo >= 3;
-      quiz.bossHP = Math.max(0, quiz.bossHP - (critical ? 2 : 1));
-      quiz.lastHit = quiz.turn;
+      fb.critical = Math.random() * 100 < st.crit;
+      const mult = 1 + Math.min(quiz.combo - 1, 10) * 0.1;
+      fb.dmg = Math.max(1, Math.round(st.atk * mult * (fb.critical ? 2 : 1) * (0.9 + Math.random() * 0.2)));
+      quiz.bossHP = Math.max(0, quiz.bossHP - fb.dmg);
     }
   } else {
     quiz.wrong++;
     quiz.combo = 0;
-    if (quiz.maxHearts) quiz.hearts = Math.max(0, quiz.hearts - 1);
+    if (quiz.shields > 0) { quiz.shields--; fb.shielded = true; }
+    else if (quiz.mode === 'stage') quiz.hearts = Math.max(0, quiz.hearts - 1);
+    else if (quiz.mode === 'boss') {
+      fb.taken = Math.round(quiz.bossAtk * (0.9 + Math.random() * 0.2));
+      quiz.playerHP = Math.max(0, quiz.playerHP - fb.taken);
+    }
     if (quiz.mode === 'stage') quiz.queue.push(q);
   }
   recordAnswer(q, ok, quiz.mode === 'review', now);
   recordCombo(quiz.maxCombo);
-  if (gained) { addXP(gained, now); quiz.xp += gained; }
-  quiz.feedback = { answer, ok, xp: gained, critical };
+  if (fb.xp) { addXP(fb.xp, now); quiz.xp += fb.xp; }
+  quiz.feedback = fb;
   quiz.phase = 'feedback';
-  sfx(ok ? (critical ? 'hit' : 'good') : 'bad');
+  sfx(ok ? (fb.critical ? 'hit' : 'good') : 'bad');
   if (quiz.mode === 'time') {
     setTimeout(() => { if (ui.quiz === quiz && quiz.phase === 'feedback') { next(quiz); renderQuiz(); } }, 450);
   }
@@ -952,31 +1438,66 @@ function next(quiz) {
 function finish(quiz, outcome) {
   if (quiz.phase === 'finished') return;
   stopTimer();
-  const now = new Date();
-  let bonus = 0, first = false, record = false;
-  const notes = [];
-  if (outcome.kind === 'stageCleared') {
-    const r = completeStage(quiz.arg, outcome.stars);
-    bonus += 20; notes.push('クリアボーナス +20 XP');
-    if (r.first) { bonus += 20; notes.push('初クリアボーナス +20 XP'); first = true; }
-    if (outcome.stars === 3) { bonus += 20; notes.push('ノーミスボーナス +20 XP'); }
-    record = !r.first && outcome.stars > r.prev;
-  } else if (outcome.kind === 'bossDefeated') {
-    first = defeatBoss(quiz.arg);
-    bonus += first ? 100 : 30;
-    notes.push(first ? '初撃破ボーナス +100 XP' : '撃破ボーナス +30 XP');
-  } else if (outcome.kind === 'dailyDone') {
-    if (completeDaily(now)) { bonus += 30; notes.push('本日のデイリー達成 +30 XP'); }
-  } else if (outcome.kind === 'reviewDone') {
-    bonus += 10; notes.push('復習完了ボーナス +10 XP');
-  } else if (outcome.kind === 'timeUp') {
-    if (recordTimeAttack(outcome.score)) { record = true; bonus += 20; notes.push('自己ベスト更新 +20 XP'); }
+  const now = new Date(), st = quiz.stats, gm = 1 + st.gold / 100;
+  let bonusXP = 0, first = false, record = false, chest = null;
+  const notes = [], drops = [], loot = { gold: 0, gems: 0, tickets: 0 };
+  switch (outcome.kind) {
+    case 'stageCleared': {
+      const r = completeStage(quiz.arg, outcome.stars);
+      bonusXP += 20; notes.push('クリアボーナス +20 XP');
+      if (r.first) { bonusXP += 20; notes.push('初クリアボーナス +20 XP'); first = true; loot.gems += 50; }
+      if (outcome.stars === 3) { bonusXP += 20; notes.push('ノーミスボーナス +20 XP'); if (r.prev < 3) loot.gems += 30; }
+      record = !r.first && outcome.stars > r.prev;
+      loot.gold += Math.round((100 + 50 * outcome.stars) * gm);
+      chest = rollChest(r.first || outcome.stars === 3 ? 1 : 0, st.luck);
+      bumpMission('clears');
+      break;
+    }
+    case 'stageFailed':
+      loot.gold += Math.round(30 * gm);
+      break;
+    case 'bossDefeated': {
+      first = defeatBoss(quiz.arg);
+      S.bossLevels[quiz.arg] = Math.min(99, quiz.bossLv + 1);
+      bonusXP += first ? 100 : 30;
+      notes.push(first ? '初撃破ボーナス +100 XP' : '撃破ボーナス +30 XP');
+      loot.gold += Math.round(400 * quiz.bossLv * gm);
+      loot.gems += first ? 300 : 50;
+      chest = rollChest(2, st.luck);
+      const boost = 1 + st.luck / 100, roll = Math.random() * 100;
+      const dropR = roll < 0.5 * boost ? 'UR' : roll < 5 * boost ? 'SSR' : roll < 25 * boost ? 'SR' : null;
+      if (dropR) { const pool = ITEMS.filter((i) => i.rarity === dropR); drops.push({ rarity: dropR, ...grantItem(pool[Math.floor(Math.random() * pool.length)]) }); }
+      bumpMission('boss');
+      break;
+    }
+    case 'bossLost':
+      loot.gold += Math.round(100 * quiz.bossLv * gm);
+      bumpMission('boss');
+      break;
+    case 'dailyDone':
+      if (completeDaily(now)) { bonusXP += 30; notes.push('本日のデイリー達成 +30 XP'); loot.gems += 100; chest = rollChest(1, st.luck); }
+      break;
+    case 'reviewDone':
+      bonusXP += 10; notes.push('復習完了ボーナス +10 XP');
+      loot.gold += Math.round(200 * gm);
+      break;
+    case 'timeUp':
+      if (recordTimeAttack(outcome.score)) { record = true; bonusXP += 20; notes.push('自己ベスト更新 +20 XP'); loot.gems += 30; }
+      break;
   }
-  if (bonus) { addXP(bonus, now); quiz.xp += bonus; }
+  if (bonusXP) { addXP(bonusXP, now); quiz.xp += bonusXP; }
+  const levelAfter = levelStatus(S.xp).level;
+  if (levelAfter > quiz.levelBefore) loot.gems += 100 * (levelAfter - quiz.levelBefore);
   const badges = evaluateBadges(now);
+  const badgeGems = 100 * badges.length;
+  if (chest) S.chests++;
+  applyLoot(loot);
+  if (chest) applyLoot(chest);
+  persist();
   quiz.summary = {
     outcome, xp: quiz.xp, correct: quiz.correct, answered: quiz.answered, maxCombo: quiz.maxCombo,
-    levelBefore: quiz.levelBefore, levelAfter: levelStatus(S.xp).level, badges, first, record, notes,
+    levelBefore: quiz.levelBefore, levelAfter, badges, first, record, notes, chest, drops,
+    gold: quiz.gold + loot.gold, gems: loot.gems + badgeGems, tickets: loot.tickets,
   };
   quiz.phase = 'finished';
   quiz.feedback = null;
@@ -1000,11 +1521,17 @@ function startTimer(quiz) {
 }
 function stopTimer() { clearInterval(timer); timer = 0; }
 
-// ---------------------------------------------------------------- ui state
-const ui = { tab: 'home', stack: [{ view: 'home' }], quiz: null, sheet: null, query: '', lessonRewarded: {} };
-const top = () => ui.stack[ui.stack.length - 1];
+// ================================================================ ui state
+const TABS = ['home', 'gacha', 'equip', 'review', 'profile'];
+const ROOT_VIEW = { home: 'home', gacha: 'gacha', equip: 'equip', review: 'review', profile: 'profile' };
+const ui = {
+  tab: 'home', stacks: Object.fromEntries(TABS.map((t) => [t, [{ view: ROOT_VIEW[t] }]])),
+  quiz: null, summon: null, query: '', filter: 'all', lessonRewarded: {}, canDownload: !inArtifact, downloads: null,
+};
+const stack = () => ui.stacks[ui.tab];
+const top = () => stack()[stack().length - 1];
 
-// ---------------------------------------------------------------- view helpers
+// ================================================================ view helpers
 const starsHTML = (n, max = 3) => `<span class="stars" aria-label="星${n}個">${Array.from({ length: max }, (_, i) => icon('star', i < n ? 'on' : '')).join('')}</span>`;
 const barHTML = (p, color, cls = '') => `<span class="bar ${cls}" style="--c:${color}"><i style="width:${Math.max(0, Math.min(1, p)) * 100}%;${p > 0 ? '' : 'opacity:0'}"></i></span>`;
 function ringHTML(p, color, size = 38, stroke = 5) {
@@ -1012,11 +1539,30 @@ function ringHTML(p, color, size = 38, stroke = 5) {
   return `<svg class="ring" viewBox="0 0 ${size} ${size}" style="--c:${color}"><circle class="t" cx="${size / 2}" cy="${size / 2}" r="${r}"/><circle class="p" cx="${size / 2}" cy="${size / 2}" r="${r}" stroke-dasharray="${c}" stroke-dashoffset="${c * (1 - Math.min(1, Math.max(0, p)))}" transform="rotate(-90 ${size / 2} ${size / 2})"/></svg>`;
 }
 const pct = (x) => `${Math.round(x * 100)}%`;
+function itemTile(id, opts = {}) {
+  const it = ITEM[id], own = S.items[id];
+  if (!it) return '';
+  if (opts.unknown) return `<span class="item unknown" data-r="${it.rarity}"><span class="rar">${it.rarity}</span>？</span>`;
+  const lb = own ? own.lb : 0;
+  return `<span class="item" data-r="${it.rarity}">
+    <span class="rar">${it.rarity}</span>${it.emoji}
+    ${own && !opts.bare ? `<span class="lvl">Lv${own.lv}</span><span class="lb">${Array.from({ length: MAX_LB }, (_, i) => `<i class="${i < lb ? 'on' : ''}"></i>`).join('')}</span>` : ''}
+    ${own && own.isNew && !opts.bare ? '<span class="new">NEW</span>' : ''}
+    ${!opts.bare && equippedSlot(id) ? '<span class="eq">E</span>' : ''}
+  </span>`;
+}
+function toast(msg) {
+  const el = document.createElement('div');
+  el.className = 'toast';
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 2500);
+}
 
-// ---------------------------------------------------------------- screens
+// ================================================================ screens
 function homeHTML() {
   const lv = levelStatus(S.xp), streak = currentStreak(), today = todayXP(), goal = S.dailyGoal;
-  const done = dailyDone();
+  const done = dailyDone(), m = missions(), ready = claimable();
   return `
   <section class="card player" aria-label="プレイヤー">
     <div class="row">
@@ -1024,7 +1570,7 @@ function homeHTML() {
       <div class="who">
         <h2>${esc(titleFor(lv.level))}</h2>
         ${barHTML(lv.progress, 'var(--gold)', 'thin')}
-        <p>次のレベルまで あと <span class="num">${lv.remaining}</span> XP</p>
+        <p>次のレベルまで あと <span class="num">${lv.remaining}</span> XP（レベルアップで 💎100）</p>
       </div>
     </div>
     <div class="stats">
@@ -1042,13 +1588,30 @@ function homeHTML() {
   <div class="modes">
     <button class="mode" style="--c:var(--w-gold)" data-act="start" data-mode="daily">
       ${icon(done ? 'checkCircle' : 'sun')}
-      <span><b>デイリー</b><small>${done ? '本日達成済み' : '5問・XP2倍'}</small></span>
+      <span><b>デイリー</b><small>${done ? '本日達成済み' : '5問・XP2倍・💎100'}</small></span>
     </button>
     <button class="mode" style="--c:var(--w-indigo)" data-act="start" data-mode="time">
       ${icon('watch')}
-      <span><b>タイムアタック</b><small>60秒・ベスト<span class="num">${S.timeAttackBest}</span>問</small></span>
+      <span><b>タイムアタック</b><small>${TIME_LIMIT + playerStats().time}秒・ベスト<span class="num">${S.timeAttackBest}</span>問</small></span>
     </button>
   </div>
+  <section class="card missions" aria-label="デイリーミッション">
+    <h3 style="margin:0">${icon('gift')}デイリーミッション</h3>
+    ${MISSIONS.map((d) => {
+      const got = m.claimed.includes(d.id), val = Math.min(m[d.id] || 0, d.goal), can = ready.includes(d.id);
+      return `<div class="mission">
+        <span class="t">${esc(d.text)}</span>
+        <span class="r num">${val}/${d.goal}・報酬 ${lootLabel(d.reward)}</span>
+        ${barHTML(val / d.goal, got ? 'var(--good)' : 'var(--gold)', 'thin')}
+        <span class="act"><button class="claim ${got ? 'done' : can ? 'ready' : ''}" data-act="claim" data-id="${d.id}" ${can ? '' : 'disabled'}>${got ? '受取済み' : can ? '受け取る' : '未達成'}</button></span>
+      </div>`;
+    }).join('')}
+    <div class="mission">
+      <span class="t">すべて達成する</span>
+      <span class="r">報酬 ${lootLabel(ALL_MISSION_REWARD)}（召喚チケット）</span>
+      <span class="act"><button class="claim ${m.claimed.includes('all') ? 'done' : ready.includes('all') ? 'ready' : ''}" data-act="claim" data-id="all" ${ready.includes('all') ? '' : 'disabled'}>${m.claimed.includes('all') ? '受取済み' : ready.includes('all') ? '受け取る' : '未達成'}</button></span>
+    </div>
+  </section>
   <div class="section-head"><h2>ワールド</h2><p>7つの科目を冒険して、ボスを倒そう</p></div>
   ${SUBJECTS.map((s) => {
     const t = starTotals(s), c = clearedCount(s);
@@ -1059,7 +1622,7 @@ function homeHTML() {
         <span class="eyebrow">World ${s.order}・${esc(s.worldName)}</span>
         <span class="h3">${esc(s.title)}</span>
         ${barHTML(c / s.stages.length, themeVar(s.theme), 'thin')}
-        <span class="foot"><span class="gold num">${icon('star')}${t.earned}/${t.max}</span><span class="num">${c}/${s.stages.length} ステージ</span></span>
+        <span class="foot"><span class="gold num">${icon('star')}${t.earned}/${t.max}</span><span class="num">${c}/${s.stages.length} ステージ</span>${bossDefeated(s) ? `<span class="num">ボスLv${bossLevel(s)}</span>` : ''}</span>
       </span>
       ${icon('chev', 'chev')}
     </button>`;
@@ -1087,7 +1650,7 @@ function worldHTML(s) {
   const boss = `
     <button class="node boss ${bOpen ? '' : 'locked'}" style="left:${bp.x}%;top:${bp.y - 52}px" ${bOpen ? `data-act="push" data-view="boss" data-id="${s.id}"` : 'disabled aria-label="ボス（全ステージクリアで解放）"'}>
       <span class="disc"><span class="dot">${bOpen ? s.boss.emoji : icon('lock')}</span>${bossDefeated(s) ? `<span class="crown">${icon('crown')}</span>` : ''}</span>
-      <span class="label"><span class="boss-tag">BOSS</span><span>${esc(s.boss.name)}</span></span>
+      <span class="label"><span class="boss-tag">BOSS Lv${bossLevel(s)}</span><span>${esc(s.boss.name)}</span></span>
     </button>`;
   return `
   <section class="banner" style="--c:${themeVar(s.theme)}">
@@ -1109,14 +1672,14 @@ function ruleRows(rows) {
   return `<div class="rules">${rows.map(([ic, color, text]) => `<div style="--c:${color}">${icon(ic)}<span>${text}</span></div>`).join('')}</div>`;
 }
 function stageHTML(st) {
-  const s = SUBJ[st.subjectId], c = themeVar(s.theme), sc = stars(st.id);
+  const s = SUBJ[st.subjectId], c = themeVar(s.theme), sc = stars(st.id), ps = playerStats();
   const read = S.readLessons.includes(st.id);
   return `
   <section class="card stage-head" style="--c:${c}">
     <span class="eyebrow" style="color:${c}">Stage ${st.index + 1}</span>
     <h2>${esc(st.title)}</h2>
     <p>${esc(st.summary)}</p>
-    <div style="display:flex;align-items:center;justify-content:space-between">${starsHTML(sc)}<small style="color:var(--muted);font-weight:700">${sc === 3 ? 'パーフェクト！' : sc ? 'ノーミスで★3' : ''}</small></div>
+    <div style="display:flex;align-items:center;justify-content:space-between">${starsHTML(sc)}<small style="color:var(--muted);font-weight:700">${sc === 3 ? 'パーフェクト！' : sc ? 'ノーミスで★3' : '初クリアで 💎50'}</small></div>
   </section>
   <section class="card" style="--c:${c}">
     <h3>${icon('list')}このステージで学ぶこと</h3>
@@ -1126,9 +1689,9 @@ function stageHTML(st) {
     <h3>${icon('info')}ルール</h3>
     ${ruleRows([
       ['heart', 'var(--heart)', 'ハートは3つ。間違えるたびに1つ減ります'],
+      ['shield', 'var(--w-blue)', ps.shield ? `防具の盾が${ps.shield}回までミスを防ぎます` : '防具（SR以上）を装備すると、盾でミスを防げます'],
       ['refresh', 'var(--muted)', '間違えた問題は最後にもう一度出題されます'],
-      ['flame', 'var(--flame)', '3問連続正解からコンボボーナス +5 XP'],
-      ['star', 'var(--gold)', 'ノーミスで★3、1ミスで★2、2ミスで★1'],
+      ['star', 'var(--gold)', 'ノーミスで★3。クリアすると宝箱を獲得'],
     ])}
   </section>
   <div style="display:grid;gap:12px;--c:${c}">
@@ -1154,7 +1717,7 @@ function lessonHTML(st) {
       <section class="page finish"><div class="card">
         ${icon('checkCircle', 'big')}
         <h2>レッスン完了！</h2>
-        <p id="lesson-reward" style="color:var(--gold);font-weight:800" ${rewarded ? '' : 'hidden'}>${icon('sparkle')} 初回読了ボーナス +10 XP</p>
+        <p id="lesson-reward" style="color:var(--gold);font-weight:800" ${rewarded ? '' : 'hidden'}>${icon('sparkle')} 初回読了ボーナス +10 XP・🪙100</p>
         <p style="color:var(--muted)">覚えたことをクイズで確かめよう</p>
         <button class="btn" style="--c:${c};margin-top:8px" data-act="start" data-mode="stage" data-id="${st.id}">${icon('play')}クイズに挑戦</button>
       </div></section>
@@ -1179,12 +1742,14 @@ function bindLesson(st) {
     if (prev) prev.disabled = i === 0;
     if (nextBtn) nextBtn.disabled = i === n - 1;
     if (i === n - 1 && markLessonRead(st.id)) {
+      S.gold += 100;
       addXP(10);
       evaluateBadges();
       ui.lessonRewarded[st.id] = true;
       const note = $('#lesson-reward');
       if (note) note.hidden = false;
-      sfx('good');
+      renderWallet();
+      sfx('coin');
     }
   };
   let raf = 0;
@@ -1193,27 +1758,102 @@ function bindLesson(st) {
 }
 
 function bossHTML(s) {
-  const c = themeVar(s.theme);
+  const lv = bossLevel(s), ps = playerStats();
   return `
   <section class="card boss-hero">
     <div class="face" aria-hidden="true">${s.boss.emoji}</div>
-    <span class="eyebrow" style="color:var(--bad)">Boss</span>
+    <span class="eyebrow" style="color:var(--bad)">Boss Lv${lv}</span>
     <h2>${esc(s.boss.name)}</h2>
     <q>${esc(s.boss.taunt)}</q>
-    ${bossDefeated(s) ? `<span style="color:var(--gold);font-weight:800">${icon('crown')} 撃破済み</span>` : ''}
+    ${bossDefeated(s) ? `<span style="color:var(--gold);font-weight:800">${icon('crown')} 撃破済み・倒すたびにレベルアップ</span>` : ''}
+  </section>
+  <section class="card vs">
+    <div class="side"><small>ボス Lv${lv}</small><b class="num">HP ${fmt(bossMaxHP(s, lv))}</b><small class="num">攻撃 ${fmt(bossAtk(lv))}</small></div>
+    <span class="x">VS</span>
+    <div class="side"><small>あなた</small><b class="num">HP ${fmt(ps.hp)}</b><small class="num">攻撃 ${fmt(ps.atk)}・会心 ${ps.crit}%</small></div>
   </section>
   <section class="card">
     <h3>${icon('shield')}ボス戦のルール</h3>
     ${ruleRows([
-      ['bolt', 'var(--bad)', `ボスのHPは${BOSS_HP}。正解するたびに1ダメージ`],
-      ['flame', 'var(--flame)', '3コンボ以上でクリティカル！2ダメージ'],
-      ['heart', 'var(--heart)', 'あなたのハートは3つ。なくなると敗北'],
-      ['refresh', 'var(--muted)', `${esc(s.shortTitle)}の全${subjectQuestions(s).length}問からランダムに出題`],
-      ['crown', 'var(--gold)', '初撃破で +100 XP とバッジを獲得'],
+      ['bolt', 'var(--bad)', '正解するとボスにダメージ。コンボが続くほど威力アップ'],
+      ['flame', 'var(--flame)', '会心の一撃はダメージ2倍（武器・アクセサリーで会心率アップ）'],
+      ['heart', 'var(--heart)', '間違えるとボスの反撃。HPが0になると敗北'],
+      ['shield', 'var(--w-blue)', ps.shield ? `盾が${ps.shield}回まで反撃を防ぎます` : 'SR以上の防具で盾が使えます'],
+      ['gift', 'var(--gold)', `撃破で 🪙${fmt(400 * lv)}・💎${bossDefeated(s) ? 50 : 300}・金以上の宝箱。レア装備のドロップも`],
     ])}
   </section>
-  <button class="btn" style="--c:var(--bad)" data-act="start" data-mode="boss" data-id="${s.id}">${icon('bolt')}${bossDefeated(s) ? '再戦する' : 'たたかう'}</button>
-  <span style="--c:${c}"></span>`;
+  <button class="btn" style="--c:var(--bad)" data-act="start" data-mode="boss" data-id="${s.id}">${icon('bolt')}${bossDefeated(s) ? `Lv${lv}に挑む` : 'たたかう'}</button>
+  <button class="linkbtn" style="--c:var(--accent)" data-act="tab" data-tab="equip">装備を整える</button>`;
+}
+
+function gachaHTML() {
+  const pick = pickupFor(), toPity = PITY - S.pity;
+  const can1 = S.gems >= COST_1, can10 = S.gems >= COST_10;
+  return `
+  <section class="altar">
+    <span class="eyebrow">装備召喚</span>
+    <h2>診断士の武具庫</h2>
+    <div class="pickup">
+      ${itemTile(pick.id, { bare: true })}
+      <div><small>本日のピックアップ</small><b>${esc(pick.name)}</b><small>SSRが出たとき、50%でこの装備</small></div>
+    </div>
+    <div class="pity">
+      <span class="num">SSR以上確定まで あと ${toPity}回</span>
+      ${barHTML(S.pity / PITY, '#FFD66B', 'thin')}
+    </div>
+    <div class="summon-btns">
+      <button class="sbtn" data-act="summon" data-n="1" data-pay="gems" ${can1 ? '' : 'disabled'}><b>1回召喚</b><small class="num">💎 ${COST_1}</small></button>
+      <button class="sbtn gold" data-act="summon" data-n="10" data-pay="gems" ${can10 ? '' : 'disabled'}><b>10連召喚</b><small class="num">💎 ${fmt(COST_10)}・SR以上1枠確定</small></button>
+      <button class="sbtn wide" style="--c:#2FA37A" data-act="summon" data-n="${S.tickets >= 10 ? 10 : 1}" data-pay="ticket" ${S.tickets ? '' : 'disabled'}><b>チケットで${S.tickets >= 10 ? '10連' : '1回'}召喚</b><small class="num">🎫 ${S.tickets >= 10 ? 10 : 1}枚（所持 ${S.tickets}枚）</small></button>
+    </div>
+  </section>
+  <section class="card">
+    <h3>${icon('info')}提供割合</h3>
+    <div class="rates">${RATE_TABLE.slice().reverse().map(([r, p]) => `<div><b style="${r === 'UR' ? 'background:var(--rainbow);-webkit-background-clip:text;background-clip:text;color:transparent' : `color:var(--r-${r.toLowerCase()})`}">${r}</b><small>${p}%</small></div>`).join('')}</div>
+    <p class="note" style="margin-top:10px">同じ装備が出ると限界突破（最大${MAX_LB}回。最大レベルと性能がアップ）。完凸後はジェムやゴールドに変換されます。${PITY}回連続でSSRが出なかった場合、次はSSR以上が確定します。</p>
+  </section>
+  <section class="card">
+    <h3>${icon('gift')}ジェムの集め方</h3>
+    ${ruleRows([
+      ['calendar', 'var(--gold)', '毎日のログインボーナス（7日目はチケット3枚）'],
+      ['flag', 'var(--w-green)', 'ステージ初クリア 💎50、★3 達成 💎30'],
+      ['shield', 'var(--bad)', 'ボス初撃破 💎300、周回 💎50'],
+      ['up', 'var(--w-indigo)', 'レベルアップ・バッジ獲得でそれぞれ 💎100'],
+      ['gift', 'var(--flame)', 'デイリーミッションと宝箱'],
+    ])}
+  </section>`;
+}
+
+function equipHTML() {
+  const ps = playerStats();
+  const owned = Object.keys(S.items).filter((id) => ITEM[id]);
+  const f = ui.filter;
+  let list;
+  if (f === 'book') list = ITEMS.map((i) => i.id);
+  else list = owned.filter((id) => f === 'all' || ITEM[id].type === f)
+    .sort((a, b) => (RANK[ITEM[b].rarity] - RANK[ITEM[a].rarity]) || (S.items[b].lv - S.items[a].lv) || a.localeCompare(b));
+  const statCells = [['atk', ps.atk], ['hp', ps.hp], ['crit', ps.crit], ['shield', ps.shield], ['xp', ps.xp], ['gold', ps.gold], ['luck', ps.luck], ['hint', ps.hint], ['time', ps.time]];
+  return `
+  <section class="card power">
+    <div class="big"><b class="num">${fmt(ps.power)}</b><span>戦闘力</span></div>
+    <div class="statgrid">${statCells.map(([k, v]) => `<div><small>${STAT_LABEL[k]}</small><b>${k === 'atk' || k === 'hp' ? fmt(v) : statText(k, v)}</b></div>`).join('')}</div>
+  </section>
+  <div class="slots">${SLOTS.map((slot) => {
+    const id = S.equip[slot];
+    return `<button class="slot-btn" data-act="slot" data-slot="${slot}"><span class="label">${SLOT_NAME[slot]}</span>${id && S.items[id] ? itemTile(id, { bare: false }) : `<span class="empty">${icon('plus')}</span>`}</button>`;
+  }).join('')}</div>
+  <div class="filters" role="group" aria-label="絞り込み">${[['all', 'すべて'], ['weapon', '武器'], ['armor', '防具'], ['acc', 'アクセ'], ['book', `装備図鑑 ${ownedCount()}/${ITEMS.length}`]].map(([k, l]) => `<button data-act="filter" data-f="${k}" aria-pressed="${f === k}">${l}</button>`).join('')}</div>
+  ${list.length ? `<div class="inv">${list.map((id) => {
+    const has = !!S.items[id];
+    if (f === 'book' && !has) return `<div style="display:grid;gap:4px">${itemTile(id, { unknown: true })}<span class="name">？？？</span></div>`;
+    return `<button data-act="item" data-id="${id}">${itemTile(id)}<span class="name">${esc(ITEM[id].name)}</span></button>`;
+  }).join('')}</div>` : `
+  <section class="card hero-card" style="--c:var(--accent)">
+    ${icon('sword', 'big')}
+    <h2>装備がまだありません</h2>
+    <p>召喚で装備を手に入れよう。ジェムはクリアやログインボーナスでもらえます。</p>
+    <button class="btn" data-act="tab" data-tab="gacha">${icon('sparkle')}召喚へ</button>
+  </section>`}`;
 }
 
 function reviewHTML() {
@@ -1223,7 +1863,7 @@ function reviewHTML() {
   <section class="card hero-card" style="--c:${due ? c : 'var(--good)'}">
     ${icon(due ? 'brain' : 'checkCircle', 'big')}
     <h2>${due ? `今日の復習 <span class="num">${due}</span>問` : '今日の復習はありません'}</h2>
-    <p>${due ? `間違えた問題を解き直して記憶を定着させよう。1回で最大${REVIEW_N}問です。` : '間違えた問題は、ここに届きます。ステージやボスに挑戦しよう！'}</p>
+    <p>${due ? `間違えた問題を解き直して記憶を定着させよう。1回で最大${REVIEW_N}問。完了で 🪙200。` : '間違えた問題は、ここに届きます。ステージやボスに挑戦しよう！'}</p>
     ${due ? `<button class="btn" style="--c:${c};margin-top:4px" data-act="start" data-mode="review">${icon('play')}復習をはじめる</button>` : ''}
   </section>
   <div class="tiles">
@@ -1290,10 +1930,14 @@ function profileHTML() {
     <div class="lvring"><svg viewBox="0 0 86 86"><circle class="t" cx="43" cy="43" r="${r}"/><circle class="p" cx="43" cy="43" r="${r}" stroke-dasharray="${circ}" stroke-dashoffset="${circ * (1 - lv.progress)}" transform="rotate(-90 43 43)"/></svg><div><small>Lv</small><b class="num">${lv.level}</b></div></div>
     <div style="display:grid;gap:4px">
       <h2>${esc(titleFor(lv.level))}</h2>
-      <span class="xp num">累計 ${S.xp} XP</span>
+      <span class="xp num">累計 ${fmt(S.xp)} XP</span>
       <p class="num">次のレベルまで ${lv.remaining} XP</p>
     </div>
   </section>
+  <div class="menu-row">
+    <button class="menu-btn" style="--c:var(--w-purple)" data-act="push" data-view="collection">${icon('books')}<span>用語図鑑<small class="num">${ALL_CARDS.filter(cardUnlocked).length}/${ALL_CARDS.length}枚</small></span></button>
+    <button class="menu-btn" style="--c:var(--w-green)" data-act="push" data-view="save">${icon('save')}<span>セーブデータ<small>書き出し・読み込み</small></span></button>
+  </div>
   <section class="card">
     <div class="section-head" style="margin:0"><h2>この7日間</h2><p class="num">合計 ${days.reduce((n, x) => n + x.xp, 0)} XP</p></div>
     <div class="week">${days.map((x, i) => `
@@ -1306,7 +1950,7 @@ function profileHTML() {
   <div class="tiles">
     <div class="tile" style="--c:var(--flame)"><span class="k">${icon('flame')}連続学習</span><span class="v">${currentStreak()}日</span></div>
     <div class="tile" style="--c:var(--w-orange)"><span class="k">${icon('calendar')}最長記録</span><span class="v">${S.longestStreak}日</span></div>
-    <div class="tile" style="--c:var(--w-blue)"><span class="k">${icon('list')}解いた問題</span><span class="v">${S.totalAnswered}問</span></div>
+    <div class="tile" style="--c:var(--w-blue)"><span class="k">${icon('list')}解いた問題</span><span class="v">${fmt(S.totalAnswered)}問</span></div>
     <div class="tile" style="--c:var(--good)"><span class="k">${icon('target')}正答率</span><span class="v">${acc === null ? '—' : pct(acc)}</span></div>
     <div class="tile" style="--c:var(--flame)"><span class="k">${icon('bolt')}最大コンボ</span><span class="v">${S.maxCombo}</span></div>
     <div class="tile" style="--c:var(--gold)"><span class="k">${icon('crown')}ボス撃破</span><span class="v">${S.defeatedBosses.length}/${SUBJECTS.length}</span></div>
@@ -1320,7 +1964,7 @@ function profileHTML() {
     </div>`; }).join('')}
   </section>
   <section class="card" style="display:grid;gap:14px">
-    <div class="section-head" style="margin:0"><h2>バッジ</h2><p class="num">${earned} / ${BADGES.length} 獲得</p></div>
+    <div class="section-head" style="margin:0"><h2>バッジ</h2><p class="num">${earned} / ${BADGES.length} 獲得・獲得ごとに 💎100</p></div>
     <div class="badges">${BADGES.map((b) => `
       <button class="badge ${S.badges[b.id] ? 'earned' : ''}" data-act="badge" data-id="${b.id}"><span class="medal">${icon(b.icon)}</span>${esc(b.name)}</button>`).join('')}</div>
   </section>
@@ -1337,54 +1981,149 @@ function profileHTML() {
   <p class="fineprint">中小企業診断士試験の1次試験7科目（入門レベル）の要点をクイズで学べます。問題と解説はアプリ用に作成したもので、白書の数値や制度の条件は改定されることがあります。最新の情報は公式資料で確認してください。</p>`;
 }
 const syncHTML = () => cloud.ref
-  ? '<div class="sync"><i class="on"></i><span>進捗は claude.ai のあなた専用の保存領域と、このブラウザに保存しています。ほかの端末でも続きから遊べます。</span></div>'
-  : '<div class="sync"><i></i><span>進捗はこのブラウザに保存しています。ブラウザのデータを消すと進捗も消えます。</span></div>';
+  ? `<div class="sync"><i class="on"></i><span>自動セーブ中：claude.ai のあなた専用の保存領域と、このブラウザ。最終保存 ${S.savedAt ? fmtDate(S.savedAt) : '—'}</span></div>`
+  : `<div class="sync"><i class="on"></i><span>自動セーブ中：このブラウザ。最終保存 ${S.savedAt ? fmtDate(S.savedAt) : '—'}。念のため「セーブデータ」から書き出しておくと安心です。</span></div>`;
 function renderSyncStatus() { const el = $('#sync'); if (el) el.innerHTML = syncHTML(); }
 
-// ---------------------------------------------------------------- quiz screen
+function saveHTML() {
+  const lv = levelStatus(S.xp).level;
+  return `
+  <section class="card save-card">
+    <h3>${icon('save')}自動セーブ</h3>
+    <div class="facts-list">
+      <div><span>最終保存</span><span>${S.savedAt ? fmtDate(S.savedAt) : '—'}</span></div>
+      <div><span>保存先</span><span>${cloud.ref ? 'claude.ai ＋ このブラウザ' : 'このブラウザ'}</span></div>
+      <div><span>レベル</span><span>Lv${lv}（${fmt(S.xp)} XP）</span></div>
+      <div><span>装備</span><span>${ownedCount()} / ${ITEMS.length} 種類</span></div>
+    </div>
+    <p>プレイ内容はその都度、自動で保存されます。ただしブラウザのデータを消すと失われます。iPhone では、ホーム画面から開いた場合と Safari で開いた場合で、保存場所が別々になります。</p>
+  </section>
+  <section class="card save-card">
+    <h3>${icon('download')}セーブデータを書き出す</h3>
+    <p>セーブコードかファイルで控えておけば、データが消えても復元でき、別の端末にも引っ越せます。コードはメモアプリなどに貼って保管してください。</p>
+    <textarea id="save-code" class="codebox" readonly placeholder="「セーブコードを作る」を押すと、ここに表示されます" aria-label="セーブコード"></textarea>
+    <div class="two">
+      <button class="btn small" data-act="make-code">${icon('save')}セーブコードを作る</button>
+      <button class="btn small ghost" data-act="copy-code">${icon('copy')}コピー</button>
+    </div>
+    ${ui.canDownload ? `<button class="btn small ghost" style="--c:var(--w-green)" data-act="export-file">${icon('download')}ファイルに保存</button>` : ''}
+  </section>
+  <section class="card save-card">
+    <h3>${icon('upload')}セーブデータを読み込む</h3>
+    <p>読み込むと、いまのデータは上書きされます。</p>
+    <textarea id="import-code" class="codebox" placeholder="セーブコードを貼り付け" aria-label="読み込むセーブコード"></textarea>
+    <div class="two">
+      <button class="btn small" style="--c:var(--w-orange)" data-act="import-code">${icon('upload')}コードから読み込む</button>
+      <label class="btn small ghost filebtn" style="--c:var(--w-orange)">${icon('upload')}ファイルから<input type="file" id="import-file" accept=".json,.txt,application/json,text/plain"></label>
+    </div>
+  </section>`;
+}
+
+// ---------------------------------------------------------------- save codes
+const toB64 = (bytes) => { let s = ''; for (let i = 0; i < bytes.length; i += 0x8000) s += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000)); return btoa(s); };
+const fromB64 = (b64) => Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
+async function encodeSave() {
+  const json = JSON.stringify({ app: 'shindan-quest', v: 2, data: S });
+  if (window.CompressionStream) {
+    const stream = new Blob([json]).stream().pipeThrough(new CompressionStream('deflate'));
+    return 'SQ2:' + toB64(new Uint8Array(await new Response(stream).arrayBuffer()));
+  }
+  return 'SQ1:' + toB64(new TextEncoder().encode(json));
+}
+async function decodeSave(text) {
+  const code = String(text || '').trim();
+  let parsed;
+  try {
+  if (code.startsWith('{')) parsed = JSON.parse(code);
+  else {
+    const tag = code.slice(0, 4), body = code.slice(4).replace(/\s+/g, '');
+    const bytes = fromB64(body);
+    if (tag === 'SQ2:') {
+      if (!window.DecompressionStream) throw new Error('このブラウザは圧縮コードに対応していません');
+      const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream('deflate'));
+      parsed = JSON.parse(await new Response(stream).text());
+    } else if (tag === 'SQ1:') parsed = JSON.parse(new TextDecoder().decode(bytes));
+    else throw new Error('format');
+  }
+  } catch (e) {
+    throw new Error(e && e.message === 'このブラウザは圧縮コードに対応していません' ? e.message : 'セーブコードを読み取れませんでした。途中で切れていないか確認してください');
+  }
+  const data = parsed && parsed.app === 'shindan-quest' ? parsed.data : parsed;
+  if (!data || typeof data !== 'object' || typeof data.xp !== 'number') throw new Error('診断士クエストのセーブデータではありません');
+  return normalize(data);
+}
+function importPreview(data) {
+  openSheet(`
+    <h2>このデータを読み込みますか？</h2>
+    <div class="facts-list">
+      <div><span>保存日時</span><span>${data.savedAt ? fmtDate(data.savedAt) : '—'}</span></div>
+      <div><span>レベル</span><span>Lv${levelStatus(data.xp).level}（${fmt(data.xp)} XP）</span></div>
+      <div><span>クリアしたステージ</span><span>${Object.values(data.stageStars).filter((v) => v > 0).length} / ${ALL_STAGES.length}</span></div>
+      <div><span>装備</span><span>${Object.keys(data.items).filter((id) => ITEM[id]).length} 種類</span></div>
+      <div><span>所持</span><span>🪙${fmt(data.gold)} 💎${fmt(data.gems)} 🎫${fmt(data.tickets)}</span></div>
+    </div>
+    <p class="note">いまのデータ（Lv${levelStatus(S.xp).level}）は上書きされます。</p>
+    <button class="btn" style="--c:var(--w-orange)" data-act="import-yes">上書きして読み込む</button>
+    <button class="linkbtn" data-act="sheet-close">キャンセル</button>`);
+  ui.pendingImport = data;
+}
+
+// ================================================================ quiz screen
 function renderQuiz() {
   const host = $('#quiz');
   const quiz = ui.quiz;
   if (!quiz) { host.hidden = true; host.innerHTML = ''; document.body.style.overflow = ''; return; }
   host.hidden = false;
   document.body.style.overflow = 'hidden';
-  if (quiz.phase === 'finished') { host.innerHTML = `<div class="frame">${resultHTML(quiz)}</div>`; animateXP(quiz); return; }
+  if (quiz.phase === 'finished') { host.innerHTML = `<div class="frame">${resultHTML(quiz)}</div>`; animateCount(); return; }
   const q = quiz.current, fb = quiz.feedback, answering = quiz.phase === 'answering';
   const origin = QREF[q.id];
   let topMid;
   if (quiz.mode === 'time') {
-    topMid = `<div class="bar" style="--c:${themeVar(quiz.theme)}"><i id="ta-bar" style="width:${(quiz.remaining / quiz.timeLimit) * 100}%;transition:none"></i></div>
+    topMid = `<span class="bar" style="--c:${themeVar(quiz.theme)}"><i id="ta-bar" style="width:${(quiz.remaining / quiz.timeLimit) * 100}%;transition:none"></i></span>
       <b id="ta-sec" class="ta-sec num">${Math.ceil(quiz.remaining)}秒</b>
       <span class="ta-score num">${icon('checkCircle')}${quiz.correct}</span>`;
   } else if (quiz.mode === 'boss') {
-    topMid = '<div class="boss-title">BOSS BATTLE</div>';
+    topMid = `<div class="boss-title num">BOSS BATTLE Lv${quiz.bossLv}</div>`;
   } else {
     const p = quiz.mode === 'stage' ? quiz.cleared.size / quiz.total : quiz.answered / quiz.total;
     topMid = barHTML(p, 'var(--good)');
   }
-  const hearts = quiz.maxHearts ? `<span class="hearts" aria-label="ハート残り${quiz.hearts}">${Array.from({ length: quiz.maxHearts }, (_, i) => i < quiz.hearts ? icon('heart') : icon('heart', 'off')).join('')}</span>` : '';
-  const boss = quiz.mode === 'boss' ? `
-    <div class="boss-card">
-      <span class="face ${quiz.lastHit === quiz.turn && fb && fb.ok ? 'hit' : ''}" aria-hidden="true">${quiz.subject.boss.emoji}</span>
-      <div class="meta"><div><span>${esc(quiz.subject.boss.name)}</span><span class="hp num">HP ${quiz.bossHP}/${BOSS_HP}</span></div>${barHTML(quiz.bossHP / BOSS_HP, 'var(--bad)')}</div>
-      ${fb && fb.critical ? '<span class="crit">CRITICAL!</span>' : ''}
+  const shields = quiz.shields ? Array.from({ length: quiz.shields }, () => icon('shield', 'shield')).join('') : '';
+  const hearts = quiz.maxHearts ? `<span class="hearts" aria-label="ハート残り${quiz.hearts}${quiz.shields ? `、盾${quiz.shields}` : ''}">${shields}${Array.from({ length: quiz.maxHearts }, (_, i) => i < quiz.hearts ? icon('heart') : icon('heart', 'off')).join('')}</span>` : '';
+  const battle = quiz.mode === 'boss' ? `
+    <div class="battle">
+      <div class="boss-card">
+        <span class="face ${fb && fb.ok ? 'hit' : ''}" aria-hidden="true">${quiz.subject.boss.emoji}</span>
+        <div class="meta"><div><span>${esc(quiz.subject.boss.name)}</span><span class="hp">HP ${fmt(quiz.bossHP)}/${fmt(quiz.bossMaxHP)}</span></div>${barHTML(quiz.bossHP / quiz.bossMaxHP, 'var(--bad)')}</div>
+        ${fb && fb.dmg ? `<span class="dmg ${fb.critical ? 'crit' : ''}">${fmt(fb.dmg)}</span>` : ''}
+        ${fb && fb.critical ? '<span class="crit">CRITICAL!</span>' : ''}
+      </div>
+      <div class="me-card ${fb && fb.taken ? 'hurt' : ''}">
+        <span class="me">YOU</span>
+        <div class="meta"><div><span>あなた ${quiz.shields ? `<span class="shields">${shields}</span>` : ''}</span><span class="hp">HP ${fmt(quiz.playerHP)}/${fmt(quiz.playerMaxHP)}</span></div>${barHTML(quiz.playerHP / quiz.playerMaxHP, quiz.playerHP / quiz.playerMaxHP < 0.3 ? 'var(--bad)' : 'var(--good)', 'thin')}</div>
+        ${fb && fb.taken ? `<span class="dmg taken">-${fmt(fb.taken)}</span>` : ''}
+      </div>
     </div>` : '';
   const tags = `<div class="q-tags">
       <span class="tag" style="--c:${themeVar(quiz.theme)}">${TYPE_LABEL[q.type]}</span>
       ${!quiz.subject && origin ? `<span class="tag" style="--c:${themeVar(origin.subject.theme)}">${esc(origin.subject.shortTitle)}</span>` : ''}
       ${quiz.combo >= 2 ? `<span class="combo num">${icon('flame')}${quiz.combo} COMBO</span>` : ''}
     </div>`;
+  const hint = q.type === 'choice' && answering && quiz.hints > 0 && !quiz.removed.length
+    ? `<button class="hintbtn" data-act="hint">${icon('bulb')}ヒントを使う（残り${quiz.hints}回）</button>` : '';
   host.innerHTML = `
   <div class="frame" style="--c:${themeVar(quiz.theme)}">
     <div class="q-top">
       <button class="icon-btn" data-act="quiz-close" aria-label="とじる">${icon('x')}</button>
       ${topMid}${hearts}
     </div>
-    ${boss}
+    ${battle}
     <div class="q-scroll" id="q-scroll">
       <div class="q-body">
         ${tags}
         <p class="prompt">${esc(q.prompt)}</p>
+        ${hint}
         ${answersHTML(quiz, q, fb, answering)}
       </div>
     </div>
@@ -1393,7 +2132,7 @@ function renderQuiz() {
     ${quiz.confirmQuit ? `
     <div class="confirm"><div class="panel">
       <h3>クイズを中断しますか？</h3>
-      <p>ここまでの回答と獲得XPは記録されます。ステージのクリアにはなりません。</p>
+      <p>ここまでの回答・XP・ゴールドは記録されます。ステージのクリアにはなりません。</p>
       <button class="btn" style="--c:var(--bad)" data-act="quit-yes">中断する</button>
       <button class="linkbtn" data-act="quit-no">続ける</button>
     </div></div>` : ''}
@@ -1407,9 +2146,10 @@ function answersHTML(quiz, q, fb, answering) {
   if (q.type === 'choice') {
     const picked = fb ? fb.answer.i : null;
     return `<div class="choices">${quiz.choiceOrder.map((oi, pos) => {
-      const st = !fb ? '' : oi === q.answer ? 'good' : oi === picked ? 'bad' : 'dim';
+      const gone = quiz.removed.includes(oi);
+      const st = !fb ? (gone ? 'gone' : '') : oi === q.answer ? 'good' : oi === picked ? 'bad' : 'dim';
       const mark = st === 'good' ? icon('checkCircle', 'mark') : st === 'bad' ? icon('xCircle', 'mark') : '';
-      return `<button class="choice ${st}" data-act="ans-choice" data-i="${oi}" ${answering ? '' : 'disabled'}><span class="key">${'ABCDEF'[pos]}</span><span class="txt">${esc(q.options[oi])}</span>${mark}</button>`;
+      return `<button class="choice ${st}" data-act="ans-choice" data-i="${oi}" ${answering && !gone ? '' : 'disabled'}><span class="key">${'ABCDEF'[pos]}</span><span class="txt">${esc(q.options[oi])}</span>${mark}</button>`;
     }).join('')}</div>`;
   }
   if (q.type === 'tf') {
@@ -1428,11 +2168,11 @@ function answersHTML(quiz, q, fb, answering) {
     }
     return `<div class="slot"><span class="n">${i + 1}</span></div>`;
   }).join('');
-  if (!answering) return `<div class="order-label">あなたの並び</div><div class="slots">${slots}</div>`;
+  if (!answering) return `<div class="order-label">あなたの並び</div><div class="slots-o">${slots}</div>`;
   const remaining = quiz.shuffled.map((t, i) => ({ t, i })).filter((x) => !quiz.picked.includes(x.t));
   return `
     <div class="order-label">あなたの並び</div>
-    <div class="slots">${slots}</div>
+    <div class="slots-o">${slots}</div>
     <div class="order-label">${remaining.length ? 'タップした順に並びます' : '並べ終わったら「決定」'}</div>
     <div class="pool">${remaining.map((x) => `<button class="token" data-act="ord-pick" data-i="${x.i}">${esc(x.t)}</button>`).join('')}</div>
     <div class="order-actions">
@@ -1444,7 +2184,11 @@ const PRAISE = ['正解！', 'すばらしい！', 'その調子！', 'お見事
 const CHEER = ['おしい！', 'ドンマイ！', '次はいける！'];
 function feedbackHTML(quiz, q, fb) {
   const words = fb.ok ? PRAISE : CHEER;
-  const extras = [fb.xp ? `+${fb.xp} XP` : '', fb.ok && quiz.combo >= 3 ? `${quiz.combo}コンボ！` : '', fb.critical ? 'クリティカルヒット！' : ''].filter(Boolean).join('　');
+  const extras = [
+    fb.xp ? `+${fb.xp} XP` : '', fb.gold ? `🪙+${fb.gold}` : '',
+    fb.ok && quiz.combo >= 3 ? `${quiz.combo}コンボ！` : '', fb.critical ? '会心の一撃！' : '',
+    fb.dmg ? `${fmt(fb.dmg)}ダメージ` : '', fb.shielded ? '盾がミスを防いだ！' : '', fb.taken ? `反撃で${fmt(fb.taken)}ダメージ` : '',
+  ].filter(Boolean).join('　');
   const last = !!pendingOutcome(quiz);
   return `
   <section class="feedback ${fb.ok ? 'good' : 'bad'}" aria-live="assertive">
@@ -1454,21 +2198,33 @@ function feedbackHTML(quiz, q, fb) {
     <button class="btn" style="--c:${fb.ok ? 'var(--good)' : 'var(--bad)'}" data-act="next">${last ? '結果を見る' : 'つぎへ'}</button>
   </section>`;
 }
+function chestHTML(quiz) {
+  const c = quiz.summary.chest;
+  if (!c) return '';
+  const def = CHESTS[c.tier];
+  if (!quiz.chestOpened) {
+    return `<button class="chest ${def.rainbow ? 'rainbow' : ''}" style="--cc:${def.color}" data-act="open-chest">
+      <span class="box" aria-hidden="true">🎁</span><b>${def.name}</b><small>タップして開ける</small></button>`;
+  }
+  return `<div class="chest opened ${def.rainbow ? 'rainbow' : ''}" style="--cc:${def.color}">
+    <span class="box" aria-hidden="true">✨</span><b>${def.name}</b>
+    <div class="loot contents">${lootChips(c)}</div></div>`;
+}
 function resultHTML(quiz) {
   const sm = quiz.summary, o = sm.outcome, bossName = quiz.subject ? quiz.subject.boss.name : 'ボス';
   const success = !['stageFailed', 'bossLost'].includes(o.kind);
   const head = {
     stageCleared: [o.stars === 3 ? '🏆' : '🎉', 'ステージクリア！', sm.first ? '図鑑に新しいカードが登録されました' : sm.record ? '自己ベスト更新！' : o.stars === 3 ? 'ノーミスでクリア！' : 'この調子で★3を目指そう'],
     stageFailed: ['💔', 'ハートがなくなった…', '解説を読み直して、もう一度挑戦しよう'],
-    bossDefeated: ['👑', `${bossName}を倒した！`, sm.first ? 'ワールド制覇まであと少し！' : '再戦でも見事な勝利！'],
-    bossLost: [quiz.subject ? quiz.subject.boss.emoji : '💀', `${bossName}に敗れた…`, 'ステージを復習してから再挑戦しよう'],
+    bossDefeated: ['👑', `${bossName}を倒した！`, `ボスは Lv${quiz.bossLv + 1} になって待っています`],
+    bossLost: [quiz.subject ? quiz.subject.boss.emoji : '💀', `${bossName}に敗れた…`, '装備を強化して再挑戦しよう'],
     dailyDone: ['☀️', 'デイリーチャレンジ完了！', '明日もまた挑戦しよう'],
     reviewDone: ['🧠', '復習完了！', '正解した問題は間隔をあけて、また出題されます'],
     timeUp: ['⏱️', 'タイムアップ！', sm.record ? `自己ベスト更新！ ${o.score}問正解` : `${o.score}問正解`],
   }[o.kind];
   const c = themeVar(quiz.theme);
   const tiles = [
-    `<div class="tile" style="--c:var(--gold)"><span class="k">${icon('sparkle')}獲得XP</span><span class="v" id="xp-count">+0</span></div>`,
+    `<div class="tile" style="--c:var(--gold)"><span class="k">${icon('sparkle')}獲得XP</span><span class="v" data-count="${sm.xp}">+0</span></div>`,
     o.kind === 'timeUp'
       ? `<div class="tile" style="--c:var(--good)"><span class="k">${icon('checkCircle')}スコア</span><span class="v">${o.score}問</span></div><div class="tile" style="--c:var(--gold)"><span class="k">${icon('trophy')}自己ベスト</span><span class="v">${S.timeAttackBest}問</span></div>`
       : `<div class="tile" style="--c:var(--good)"><span class="k">${icon('target')}正答率</span><span class="v">${sm.answered ? pct(sm.correct / sm.answered) : '—'}</span></div>`,
@@ -1478,30 +2234,33 @@ function resultHTML(quiz) {
   return `
   <div class="result"><div class="inner">
     <div class="hero"><div class="emoji" aria-hidden="true">${head[0]}</div><h2>${esc(head[1])}</h2><p>${esc(head[2])}</p></div>
-    ${o.kind === 'stageCleared' ? `<div class="big-stars" aria-label="星${o.stars}個">${[1, 2, 3].map((i) => icon('star', i <= o.stars ? 'on' : '').replace('<svg ', `<svg style="animation-delay:${0.25 + i * 0.3}s" `)).join('')}</div>` : ''}
+    ${o.kind === 'stageCleared' ? `<div class="big-stars" aria-label="星${o.stars}個">${[1, 2, 3].map((i) => icon('star', i <= o.stars ? 'on' : '', `animation-delay:${0.25 + i * 0.3}s`)).join('')}</div>` : ''}
+    <div class="loot">${lootChips({ gold: sm.gold, gems: sm.gems, tickets: sm.tickets }) || '<span>報酬なし</span>'}</div>
+    ${chestHTML(quiz)}
+    ${sm.drops.length ? `<div class="card" style="display:grid;gap:10px"><h3 style="margin:0">${icon('sparkle')}レアドロップ！</h3>${sm.drops.map((d) => `<div class="drop-row">${itemTile(d.item.id)}<div><b>${esc(d.item.name)}</b><div class="note">${d.isNew ? 'NEW！ 装備に追加されました' : d.lbUp ? `限界突破 ${d.lbUp}/${MAX_LB}` : `変換 ${lootLabel(d.convert)}`}</div></div></div>`).join('')}</div>` : ''}
     <div class="tiles">${tiles}</div>
     ${sm.notes.length ? `<div class="card notes">${sm.notes.map((n) => `<div>${icon('plus')}${esc(n)}</div>`).join('')}</div>` : ''}
-    ${sm.levelAfter > sm.levelBefore ? `<div class="levelup">${icon('up')}<div><b>レベルアップ！ Lv.${sm.levelAfter}</b><small>称号「${esc(titleFor(sm.levelAfter))}」</small></div></div>` : ''}
-    ${sm.badges.length ? `<div class="card" style="display:grid;gap:12px"><h3 style="margin:0">バッジを獲得！</h3>${sm.badges.map((b) => `<div class="badge-row"><span class="medal earned">${icon(b.icon)}</span><div><b>${esc(b.name)}</b><small>${esc(b.detail)}</small></div></div>`).join('')}</div>` : ''}
+    ${sm.levelAfter > sm.levelBefore ? `<div class="levelup">${icon('up')}<div><b>レベルアップ！ Lv.${sm.levelAfter}</b><small>称号「${esc(titleFor(sm.levelAfter))}」・💎${100 * (sm.levelAfter - sm.levelBefore)}</small></div></div>` : ''}
+    ${sm.badges.length ? `<div class="card" style="display:grid;gap:12px"><h3 style="margin:0">バッジを獲得！（💎${100 * sm.badges.length}）</h3>${sm.badges.map((b) => `<div class="badge-row"><span class="medal earned">${icon(b.icon)}</span><div><b>${esc(b.name)}</b><small>${esc(b.detail)}</small></div></div>`).join('')}</div>` : ''}
   </div></div>
   <div class="actions">
     ${success
-      ? `<button class="btn" style="--c:${c}" data-act="quiz-exit">続ける</button>${quiz.mode !== 'review' ? `<button class="linkbtn" style="--c:${c}" data-act="quiz-retry">もう一度プレイ</button>` : ''}`
-      : `<button class="btn" style="--c:${c}" data-act="quiz-retry">もう一度挑戦</button><button class="linkbtn" data-act="quiz-exit">マップに戻る</button>`}
+      ? `<button class="btn" style="--c:${c}" data-act="quiz-exit">続ける</button>${quiz.mode !== 'review' ? `<button class="linkbtn" style="--c:${c}" data-act="quiz-retry">${quiz.mode === 'boss' ? `Lv${quiz.bossLv + 1}に挑む` : 'もう一度プレイ'}</button>` : ''}`
+      : `<button class="btn" style="--c:${c}" data-act="quiz-retry">もう一度挑戦</button><button class="linkbtn" data-act="quiz-equip">装備を整える</button><button class="linkbtn" data-act="quiz-exit">マップに戻る</button>`}
   </div>`;
 }
-function animateXP(quiz) {
-  const el = $('#xp-count');
-  if (!el) return;
-  const target = quiz.summary.xp, start = performance.now(), dur = 800;
+function animateCount() {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduce) { el.textContent = `+${target}`; return; }
-  const step = (t) => {
-    const k = Math.min(1, (t - start - 300) / dur);
-    el.textContent = `+${Math.round(target * Math.max(0, 1 - Math.pow(1 - k, 3)))}`;
-    if (k < 1) requestAnimationFrame(step);
-  };
-  requestAnimationFrame(step);
+  document.querySelectorAll('[data-count]').forEach((el) => {
+    const target = Number(el.dataset.count), start = performance.now();
+    if (reduce) { el.textContent = `+${fmt(target)}`; return; }
+    const step = (t) => {
+      const k = Math.min(1, (t - start - 300) / 800);
+      el.textContent = `+${fmt(target * Math.max(0, 1 - Math.pow(1 - k, 3)))}`;
+      if (k < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  });
 }
 
 // confetti
@@ -1511,7 +2270,7 @@ function confetti() {
   const dpr = window.devicePixelRatio || 1;
   cv.hidden = false;
   cv.width = innerWidth * dpr; cv.height = innerHeight * dpr;
-  ctx.scale(dpr, dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   const colors = ['#F5B301', '#F2445B', '#22A35A', '#3478F0', '#9356E4', '#FF7A1A'];
   const pieces = Array.from({ length: 90 }, () => ({ x: Math.random(), delay: Math.random() * 0.6, speed: 0.28 + Math.random() * 0.27, drift: (Math.random() - 0.5) * 80, spin: 2 + Math.random() * 5, w: 6 + Math.random() * 4, h: 10 + Math.random() * 6, color: colors[Math.floor(Math.random() * colors.length)] }));
   const t0 = performance.now();
@@ -1525,24 +2284,74 @@ function confetti() {
       const y = -20 + lt * p.speed * innerHeight, x = p.x * innerWidth + Math.sin(lt * 2.5 + p.x * 10) * p.drift;
       ctx.save(); ctx.translate(x, y); ctx.rotate(lt * p.spin); ctx.fillStyle = p.color; ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); ctx.restore();
     }
-    if (t < 4) requestAnimationFrame(frame); else { cv.hidden = true; ctx.setTransform(1, 0, 0, 1, 0, 0); }
+    if (t < 4) requestAnimationFrame(frame); else cv.hidden = true;
   };
   requestAnimationFrame(frame);
 }
 
-// ---------------------------------------------------------------- sheets
+// ================================================================ summon overlay
+const ORB = { N: '#4DA3FF', R: '#4DA3FF', SR: '#B070FF', SSR: '#FFC233', UR: 'rainbow' };
+function startSummon(n, pay) {
+  const results = summon(n, pay);
+  if (!results) { toast(pay === 'gems' ? 'ジェムが足りません' : 'チケットが足りません'); return; }
+  const best = results.reduce((b, r) => RANK[r.rarity] > RANK[b] ? r.rarity : b, 'N');
+  // 昇格演出：最初は低いレア度の色で光り、途中で本来の色に変わる
+  let from = best;
+  if (best === 'UR') from = 'SSR';
+  else if (best === 'SSR' && Math.random() < 0.5) from = 'R';
+  else if (best === 'SR' && Math.random() < 0.3) from = 'R';
+  ui.summon = { results, n, pay, best, from, phase: 'orb' };
+  renderSummon();
+  sfx(RANK[best] >= 3 ? 'rare' : 'up');
+  clearTimeout(ui.summonTimer);
+  ui.summonTimer = setTimeout(() => { if (ui.summon && ui.summon.phase === 'orb') { ui.summon.phase = 'cards'; renderSummon(); } }, from !== best ? 2100 : 1500);
+  evaluateBadges();
+  renderWallet();
+}
+function renderSummon() {
+  const host = $('#summon'), sm = ui.summon;
+  if (!sm) { host.hidden = true; host.innerHTML = ''; return; }
+  host.hidden = false;
+  if (sm.phase === 'orb') {
+    const orb = (r, cls) => ORB[r] === 'rainbow' ? `<span class="orb rainbow ${cls}"></span>` : `<span class="orb ${cls}" style="--oc:${ORB[r]}"></span>`;
+    host.innerHTML = `
+      <button class="stage" data-act="summon-skip" aria-label="スキップ">
+        <span class="orb-wrap">${orb(sm.from, '')}${sm.from !== sm.best ? orb(sm.best, 'after') : ''}</span>
+        <span class="msg">召喚中…</span>
+        <span class="hint">タップでスキップ</span>
+      </button>`;
+    return;
+  }
+  const canAgain = sm.pay === 'gems' ? S.gems >= (sm.n === 10 ? COST_10 : COST_1) : S.tickets >= sm.n;
+  host.innerHTML = `
+    <div class="stage">
+      <div class="pulls ${sm.results.length === 1 ? 'one' : ''}">${sm.results.map((r, i) => `
+        <div class="pull" style="--d:${i * 0.12}s">
+          ${itemTile(r.item.id, { bare: true })}
+          <span class="name">${esc(r.item.name)}</span>
+          <span class="note ${r.isNew ? 'new' : ''}">${r.isNew ? 'NEW!' : r.lbUp ? `限界突破 ${r.lbUp}` : `→ ${lootLabel(r.convert)}`}</span>
+        </div>`).join('')}</div>
+    </div>
+    <div class="actions">
+      <button class="sbtn" data-act="summon-close"><b>とじる</b></button>
+      <button class="sbtn gold" data-act="summon-again" ${canAgain ? '' : 'disabled'}><b>もう一度</b><small class="num">${sm.pay === 'gems' ? `💎 ${fmt(sm.n === 10 ? COST_10 : COST_1)}` : `🎫 ${sm.n}`}</small></button>
+    </div>`;
+}
+
+// ================================================================ sheets
 function openSheet(html) {
   const host = $('#sheet');
   host.innerHTML = `<div class="sheet" role="dialog" aria-modal="true"><div class="grab"></div>${html}</div>`;
   host.hidden = false;
 }
-function closeSheet() { const host = $('#sheet'); host.hidden = true; host.innerHTML = ''; }
+function closeSheet() { const host = $('#sheet'); host.hidden = true; host.innerHTML = ''; ui.sheetItem = null; }
+const closeX = `<button class="icon-btn" data-act="sheet-close" aria-label="とじる">${icon('x')}</button>`;
 function cardSheet(id) {
   const c = ALL_CARDS.find((x) => x.id === id);
   if (!c) return;
   const st = STAGE[c.stageId], s = SUBJ[st.subjectId], col = themeVar(s.theme);
   openSheet(`
-    <div class="bar-row"><span class="eyebrow" style="color:${col}">${esc(s.shortTitle)}・${esc(st.title)}</span><button class="icon-btn" data-act="sheet-close" aria-label="とじる">${icon('x')}</button></div>
+    <div class="bar-row"><span class="eyebrow" style="color:${col}">${esc(s.shortTitle)}・${esc(st.title)}</span>${closeX}</div>
     <h2>${esc(c.title)}</h2>
     <p class="body">${esc(c.body)}</p>
     ${c.formula ? `<div class="formula" style="--c:${col}">${esc(c.formula)}</div>` : ''}`);
@@ -1552,7 +2361,7 @@ function questionSheet(id) {
   if (!ref) return;
   const q = ref.q, st = S.questionStats[id], col = themeVar(ref.subject.theme);
   openSheet(`
-    <div class="bar-row"><span style="display:flex;gap:6px"><span class="tag" style="--c:${col}">${TYPE_LABEL[q.type]}</span><span class="tag" style="--c:${col}">${esc(ref.subject.shortTitle)}</span></span><button class="icon-btn" data-act="sheet-close" aria-label="とじる">${icon('x')}</button></div>
+    <div class="bar-row"><span style="display:flex;gap:6px"><span class="tag" style="--c:${col}">${TYPE_LABEL[q.type]}</span><span class="tag" style="--c:${col}">${esc(ref.subject.shortTitle)}</span></span>${closeX}</div>
     <p class="prompt">${esc(q.prompt)}</p>
     ${q.type === 'choice' ? `<div style="display:grid;gap:6px">${q.options.map((o, i) => `<div class="opt ${i === q.answer ? 'ok' : ''}">${icon(i === q.answer ? 'checkCircle' : 'circle')}<span>${esc(o)}</span></div>`).join('')}</div>` : ''}
     <div class="boxed"><small>正解</small><b>${esc(correctText(q))}</b></div>
@@ -1565,50 +2374,131 @@ function badgeSheet(id) {
   if (!b) return;
   const at = S.badges[b.id];
   openSheet(`
-    <div class="bar-row"><span></span><button class="icon-btn" data-act="sheet-close" aria-label="とじる">${icon('x')}</button></div>
+    <div class="bar-row"><span></span>${closeX}</div>
     <div style="display:grid;justify-items:center;gap:10px;text-align:center">
       <span class="medal ${at ? 'earned' : ''}" style="width:84px;height:84px;font-size:36px">${icon(b.icon)}</span>
       <h2>${esc(b.name)}</h2>
       <p>${esc(b.detail)}</p>
-      <p class="note">${at ? `${new Date(at).getFullYear()}年${new Date(at).getMonth() + 1}月${new Date(at).getDate()}日に獲得` : 'まだ獲得していません'}</p>
+      <p class="note">${at ? `${new Date(at).getFullYear()}年${new Date(at).getMonth() + 1}月${new Date(at).getDate()}日に獲得` : 'まだ獲得していません（獲得で 💎100）'}</p>
     </div>`);
 }
 function resetSheet() {
   openSheet(`
     <h2>進捗をリセットしますか？</h2>
-    <p>XP・クリア状況・バッジ・復習データがすべて消えます。元に戻せません。</p>
+    <p>XP・クリア状況・装備・通貨・バッジ・復習データがすべて消えます。元に戻せません。必要なら先にセーブデータを書き出してください。</p>
     <button class="btn" style="--c:var(--bad)" data-act="reset-yes">すべてリセット</button>
     <button class="linkbtn" data-act="sheet-close">キャンセル</button>`);
 }
+function itemSheet(id, flash = '') {
+  const it = ITEM[id], own = S.items[id];
+  if (!it || !own) return;
+  if (own.isNew) { own.isNew = false; persist(); renderTabbar(); }
+  ui.sheetItem = id;
+  const cur = itemStats(it, own.lv, own.lb), mx = maxLv(id);
+  const nextS = own.lv < mx ? itemStats(it, own.lv + 1, own.lb) : null;
+  const cost = own.lv < mx ? enhanceCost(id) : 0;
+  const slot = equippedSlot(id);
+  const equipBtns = it.type === 'acc'
+    ? ['acc1', 'acc2'].map((s) => S.equip[s] === id
+      ? `<button class="btn small ghost" data-act="unequip" data-slot="${s}">${SLOT_NAME[s]}から外す</button>`
+      : `<button class="btn small" data-act="equip" data-id="${id}" data-slot="${s}">${SLOT_NAME[s]}に装備</button>`).join('')
+    : slot
+      ? `<button class="btn small ghost" style="grid-column:1/-1" data-act="unequip" data-slot="${slot}">外す</button>`
+      : `<button class="btn small" style="grid-column:1/-1" data-act="equip" data-id="${id}" data-slot="${it.type}">装備する</button>`;
+  openSheet(`
+    <div class="bar-row"><span class="eyebrow">${TYPE_NAME[it.type]}</span>${closeX}</div>
+    <div class="detail-head">
+      ${itemTile(id, { bare: true })}
+      <div style="display:grid;gap:6px">
+        <h2>${esc(it.name)}</h2>
+        <div class="sub"><span class="rtag" data-r="${it.rarity}">${it.rarity}</span><span class="num">Lv ${own.lv} / ${mx}</span></div>
+        <div class="sub">限界突破 <span class="lbpips">${Array.from({ length: MAX_LB }, (_, i) => `<i class="${i < own.lb ? 'on' : ''}"></i>`).join('')}</span></div>
+      </div>
+    </div>
+    <p class="flavor">「${esc(it.flavor)}」</p>
+    <div class="boxed statrows">${Object.keys(cur).map((k) => `<div><span>${STAT_LABEL[k]}</span><span>${statText(k, cur[k])}${nextS && nextS[k] !== cur[k] ? ` <span class="up">→ ${statText(k, nextS[k])}</span>` : ''}</span></div>`).join('')}</div>
+    ${flash ? `<div class="boom">${flash}</div>` : ''}
+    ${own.lv < mx ? `
+    <div class="enh-row">
+      <button class="btn small stack" style="--c:var(--flame)" data-act="enhance" data-id="${id}" data-times="1" ${S.gold >= cost ? '' : 'disabled'}>強化<small class="num">🪙 ${fmt(cost)}</small></button>
+      <button class="btn small stack" style="--c:var(--flame)" data-act="enhance" data-id="${id}" data-times="10" ${S.gold >= cost ? '' : 'disabled'}>10回強化<small>ゴールドが続く限り</small></button>
+    </div>
+    <p class="note" style="text-align:center">所持 🪙${fmt(S.gold)}・12%で大成功（+2）、3%で超成功（+3）</p>` : `<p class="note" style="text-align:center">最大レベルです。同じ装備を召喚すると限界突破で上限が +${LB_LV} されます。</p>`}
+    <div class="two">${equipBtns}</div>`);
+}
+function slotSheet(slot) {
+  const type = slotType(slot);
+  const owned = Object.keys(S.items).filter((id) => ITEM[id] && ITEM[id].type === type)
+    .sort((a, b) => (RANK[ITEM[b].rarity] - RANK[ITEM[a].rarity]) || (S.items[b].lv - S.items[a].lv));
+  openSheet(`
+    <div class="bar-row"><h2>${SLOT_NAME[slot]}を選ぶ</h2>${closeX}</div>
+    ${owned.length ? `<div class="pick-list">${owned.map((id) => {
+      const st = itemStats(ITEM[id], S.items[id].lv, S.items[id].lb);
+      return `<button class="pick ${S.equip[slot] === id ? 'on' : ''}" data-act="equip" data-id="${id}" data-slot="${slot}">${itemTile(id)}<span><b>${esc(ITEM[id].name)}</b><small>${Object.keys(st).map((k) => `${STAT_LABEL[k]} ${statText(k, st[k])}`).join('・')}</small></span>${S.equip[slot] === id ? icon('check') : ''}</button>`;
+    }).join('')}</div>` : `<p class="note">この枠に装備できるアイテムがありません。召喚で手に入れよう。</p><button class="btn" data-act="tab" data-tab="gacha">${icon('sparkle')}召喚へ</button>`}
+    ${S.equip[slot] ? `<button class="linkbtn" data-act="unequip" data-slot="${slot}">外す</button>` : ''}`);
+}
+function welcomeSheet(loginIdx) {
+  const showWelcome = ui.welcomeNow;
+  openSheet(`
+    ${showWelcome ? `
+    <div style="display:grid;justify-items:center;gap:8px;text-align:center">
+      <div style="font-size:60px">🎁</div>
+      <h2>装備召喚、解禁！</h2>
+      <p>武器や防具を集めて強化し、ボスに挑もう。スタートダッシュ記念をお届けします。</p>
+      <div class="loot"><span>💎 1,500</span><span>🎫 10</span><span>🪙 3,000</span></div>
+    </div>` : ''}
+    ${loginIdx !== null ? `
+    <div style="display:grid;gap:10px">
+      <h2 style="text-align:center">ログインボーナス ${((S.loginDays - 1) % 7) + 1}日目</h2>
+      <div class="calendar">${LOGIN.map((l, i) => `<div class="${i < loginIdx ? 'got' : i === loginIdx ? 'today' : ''}"><span class="e">${l.tickets ? '🎫' : l.gems ? '💎' : '🪙'}</span><span>${i + 1}日目</span><span class="num">${lootLabel(l)}</span></div>`).join('')}</div>
+      <p class="note" style="text-align:center">毎日開くだけでもらえます。7日目はチケット3枚！</p>
+    </div>` : ''}
+    <button class="btn" data-act="sheet-close">受け取る</button>`);
+  ui.welcomeNow = false;
+}
 
-// ---------------------------------------------------------------- render
-const TAB_TITLES = { review: '復習', collection: '用語図鑑', profile: '記録' };
+// ================================================================ render
+const VIEW_TITLE = { gacha: '召喚', equip: '装備', review: '復習', profile: '記録', collection: '用語図鑑', save: 'セーブデータ', lesson: 'レッスン', boss: 'ボス戦' };
+function walletHTML() {
+  return `<div class="wallet" id="wallet"><span class="chip">🪙${fmt(S.gold)}</span><span class="chip">💎${fmt(S.gems)}</span><span class="chip">🎫${fmt(S.tickets)}</span></div>`;
+}
+function renderWallet() { const w = $('#wallet'); if (w) w.outerHTML = walletHTML(); }
 function render() {
   const view = $('#view'), bar = $('#topbar');
   const t = top();
-  let title = '', html = '';
-  if (ui.tab === 'home') {
-    if (t.view === 'home') { html = homeHTML(); }
-    else if (t.view === 'world') { const s = SUBJ[t.id]; title = s.shortTitle; html = worldHTML(s); }
-    else if (t.view === 'stage') { const st = STAGE[t.id]; title = st.title; html = stageHTML(st); }
-    else if (t.view === 'lesson') { const st = STAGE[t.id]; title = 'レッスン'; html = lessonHTML(st); }
-    else if (t.view === 'boss') { const s = SUBJ[t.id]; title = 'ボス戦'; html = bossHTML(s); }
-  } else if (ui.tab === 'review') { title = TAB_TITLES.review; html = reviewHTML(); }
-  else if (ui.tab === 'collection') { title = TAB_TITLES.collection; html = collectionHTML(); }
-  else { title = TAB_TITLES.profile; html = profileHTML(); }
-  const canBack = ui.tab === 'home' && ui.stack.length > 1;
-  bar.innerHTML = canBack
-    ? `<button class="back" data-act="back" aria-label="戻る">${icon('back')}</button><h1>${esc(title)}</h1>`
-    : `<h1 class="${ui.tab === 'home' ? 'wordmark' : ''}">${esc(ui.tab === 'home' ? '診断士クエスト' : title)}</h1>`;
+  let title = VIEW_TITLE[t.view] || '', html = '';
+  switch (t.view) {
+    case 'home': html = homeHTML(); break;
+    case 'world': { const s = SUBJ[t.id]; title = s.shortTitle; html = worldHTML(s); break; }
+    case 'stage': { const st = STAGE[t.id]; title = st.title; html = stageHTML(st); break; }
+    case 'lesson': html = lessonHTML(STAGE[t.id]); break;
+    case 'boss': html = bossHTML(SUBJ[t.id]); break;
+    case 'gacha': html = gachaHTML(); break;
+    case 'equip': html = equipHTML(); break;
+    case 'review': html = reviewHTML(); break;
+    case 'profile': html = profileHTML(); break;
+    case 'collection': html = collectionHTML(); break;
+    case 'save': html = saveHTML(); break;
+  }
+  const canBack = stack().length > 1;
+  const heading = t.view === 'home' ? '<h1 class="wordmark">診断士クエスト</h1>' : `<h1>${esc(title)}</h1>`;
+  bar.innerHTML = `${canBack ? `<button class="back" data-act="back" aria-label="戻る">${icon('back')}</button>` : ''}${heading}${walletHTML()}`;
   view.innerHTML = html;
-  if (ui.tab === 'home' && t.view === 'lesson') bindLesson(STAGE[t.id]);
+  if (t.view === 'lesson') bindLesson(STAGE[t.id]);
   renderTabbar();
 }
 function renderTabbar() {
-  const due = dueReview().length;
-  const tabs = [['home', '冒険', 'map'], ['review', '復習', 'refresh'], ['collection', '図鑑', 'books'], ['profile', '記録', 'trophy']];
-  $('#tabbar').innerHTML = `<div class="inner">${tabs.map(([id, label, ic]) => `
-    <button class="tab" data-act="tab" data-tab="${id}" ${ui.tab === id ? 'aria-current="page"' : ''}>${icon(ic)}<span>${label}</span>${id === 'review' && due ? `<span class="count num">${due}</span>` : ''}</button>`).join('')}</div>`;
+  const due = dueReview().length, newItems = newItemCount(), missionDot = claimable().length > 0;
+  const tabs = [['home', '冒険', 'map'], ['gacha', '召喚', 'sparkle'], ['equip', '装備', 'sword'], ['review', '復習', 'refresh'], ['profile', '記録', 'trophy']];
+  $('#tabbar').innerHTML = `<div class="inner">${tabs.map(([id, label, ic]) => {
+    let badge = '';
+    if (id === 'review' && due) badge = `<span class="count num">${due}</span>`;
+    else if (id === 'equip' && newItems) badge = `<span class="count num">${newItems}</span>`;
+    else if (id === 'gacha' && (S.tickets > 0 || S.gems >= COST_1)) badge = '<span class="dot"></span>';
+    else if (id === 'home' && missionDot) badge = '<span class="dot"></span>';
+    return `<button class="tab" data-act="tab" data-tab="${id}" ${ui.tab === id ? 'aria-current="page"' : ''}>${icon(ic)}<span>${label}</span>${badge}</button>`;
+  }).join('')}</div>`;
 }
 
 function startQuiz(mode, id) {
@@ -1627,22 +2517,48 @@ function closeQuiz() {
   renderQuiz();
   render();
 }
+function switchTab(tab) {
+  if (ui.tab === tab && stack().length > 1) ui.stacks[tab] = [{ view: ROOT_VIEW[tab] }];
+  ui.tab = tab;
+  render();
+  scrollTo(0, 0);
+}
+async function copyText(text, fallbackEl) {
+  try { await navigator.clipboard.writeText(text); toast('コピーしました'); }
+  catch (e) { if (fallbackEl) { fallbackEl.focus(); fallbackEl.select(); } toast('選択したのでコピーしてください'); }
+}
+async function exportFile() {
+  const payload = JSON.stringify({ app: 'shindan-quest', v: 2, exportedAt: Date.now(), data: S });
+  const name = `shindan-quest-save-${dayKey(new Date()).replace(/-/g, '')}.json`;
+  if (inArtifact) {
+    try {
+      const dl = ui.downloads || await window.claude.use('downloads');
+      if (!dl) { toast('ここではファイル保存が使えません。セーブコードを使ってください'); return; }
+      await dl.save({ filename: name, data: payload });
+      toast('保存しました');
+    } catch (e) { if (!e || e.code !== 'declined') toast('ファイルに保存できませんでした'); }
+    return;
+  }
+  const url = URL.createObjectURL(new Blob([payload], { type: 'application/json' }));
+  const a = document.createElement('a');
+  a.href = url; a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 4000);
+  toast('ファイルを保存しました');
+}
 
-// ---------------------------------------------------------------- events
-document.addEventListener('click', (e) => {
+// ================================================================ events
+document.addEventListener('click', async (e) => {
   const el = e.target.closest('[data-act]');
   if (!el || el.disabled) return;
   const act = el.dataset.act, quiz = ui.quiz;
   switch (act) {
-    case 'tab':
-      if (ui.tab === el.dataset.tab && ui.tab === 'home') ui.stack = [{ view: 'home' }];
-      ui.tab = el.dataset.tab;
-      render(); scrollTo(0, 0); break;
+    case 'tab': closeSheet(); if (ui.quiz && ui.quiz.phase === 'finished') { ui.quiz = null; renderQuiz(); } switchTab(el.dataset.tab); break;
     case 'push':
-      ui.stack.push({ view: el.dataset.view, id: el.dataset.id });
+      stack().push({ view: el.dataset.view, id: el.dataset.id });
       render(); scrollTo(0, 0); break;
     case 'back':
-      if (ui.stack.length > 1) ui.stack.pop();
+      if (stack().length > 1) stack().pop();
       render(); scrollTo(0, 0); break;
     case 'start': startQuiz(el.dataset.mode, el.dataset.id); break;
     case 'pg': {
@@ -1656,42 +2572,106 @@ document.addEventListener('click', (e) => {
     case 'ord-remove': quiz.picked.splice(Number(el.dataset.slot), 1); renderQuiz(); break;
     case 'ord-reset': quiz.picked = []; renderQuiz(); break;
     case 'ord-submit': submit(quiz, { items: quiz.picked.slice() }); renderQuiz(); break;
+    case 'hint': useHint(quiz); renderQuiz(); break;
     case 'next': next(quiz); renderQuiz(); break;
     case 'quiz-close':
-      if (quiz && quiz.answered > 0 && quiz.phase !== 'finished') { quiz.confirmQuit = true; quiz.scrollKeep = ($('#q-scroll') || {}).scrollTop; renderQuiz(); }
+      if (quiz && quiz.answered > 0 && quiz.phase !== 'finished') { quiz.confirmQuit = true; renderQuiz(); }
       else closeQuiz();
       break;
     case 'quit-yes': closeQuiz(); break;
     case 'quit-no': quiz.confirmQuit = false; renderQuiz(); break;
     case 'quiz-exit': closeQuiz(); break;
+    case 'quiz-equip': closeQuiz(); switchTab('equip'); break;
     case 'quiz-retry': {
-      const mode = quiz.mode, id = quiz.arg;
+      const nq = makeQuiz(quiz.mode, quiz.arg);
       stopTimer();
-      const nq = makeQuiz(mode, id);
       if (!nq) { closeQuiz(); break; }
       ui.quiz = nq; renderQuiz();
       if (nq.mode === 'time') startTimer(nq);
       break;
     }
+    case 'open-chest': quiz.chestOpened = true; sfx(quiz.summary.chest.tier >= 2 ? 'rare' : 'coin'); renderQuiz(); break;
+    case 'claim': {
+      const r = claimMission(el.dataset.id);
+      if (r) { sfx('coin'); toast(`受け取りました ${lootLabel(r)}`); render(); }
+      break;
+    }
+    case 'summon': startSummon(Number(el.dataset.n), el.dataset.pay); break;
+    case 'summon-skip': if (ui.summon) { ui.summon.phase = 'cards'; renderSummon(); } break;
+    case 'summon-again': { const { n, pay } = ui.summon; startSummon(n, pay); break; }
+    case 'summon-close': ui.summon = null; renderSummon(); render(); break;
+    case 'filter': ui.filter = el.dataset.f; render(); break;
+    case 'item': itemSheet(el.dataset.id); render(); break;
+    case 'slot': slotSheet(el.dataset.slot); break;
+    case 'equip': equipItem(el.dataset.slot, el.dataset.id); sfx('up'); closeSheet(); toast(`${ITEM[el.dataset.id].name} を装備しました`); render(); break;
+    case 'unequip': equipItem(el.dataset.slot, null); closeSheet(); render(); break;
+    case 'enhance': {
+      const r = enhance(el.dataset.id, Number(el.dataset.times));
+      if (!r.done) { toast('ゴールドが足りません'); break; }
+      const flash = r.super ? '超成功！' : r.great ? '大成功！' : '';
+      sfx(r.super || r.great ? 'rare' : 'up');
+      itemSheet(el.dataset.id, `${flash} Lv ${r.before} → ${r.after}${r.done > 1 ? `（${r.done}回・🪙${fmt(r.spent)}）` : ''}`);
+      evaluateBadges();
+      render();
+      break;
+    }
     case 'card': cardSheet(el.dataset.id); break;
     case 'question': questionSheet(el.dataset.id); break;
     case 'badge': badgeSheet(el.dataset.id); break;
-    case 'sheet-close': closeSheet(); break;
+    case 'sheet-close': closeSheet(); render(); break;
     case 'goal': S.dailyGoal = Number(el.dataset.goal); persist(); render(); break;
     case 'sound': S.sound = !S.sound; persist(); if (S.sound) sfx('good'); render(); break;
     case 'reset': resetSheet(); break;
     case 'reset-yes': {
-      const keep = { dailyGoal: S.dailyGoal, sound: S.sound };
+      const keep = { dailyGoal: S.dailyGoal, sound: S.sound, welcomeGiven: true, lastLoginDay: S.lastLoginDay, loginDays: S.loginDays };
       S = normalize(keep);
       persist();
       closeSheet(); render(); break;
     }
+    case 'make-code': {
+      const box = $('#save-code');
+      box.value = '作成中…';
+      box.value = await encodeSave();
+      toast('セーブコードを作りました');
+      break;
+    }
+    case 'copy-code': {
+      const box = $('#save-code');
+      if (!box.value || box.value === '作成中…') box.value = await encodeSave();
+      copyText(box.value, box);
+      break;
+    }
+    case 'export-file': exportFile(); break;
+    case 'import-code': {
+      const text = ($('#import-code') || {}).value;
+      if (!text || !text.trim()) { toast('セーブコードを貼り付けてください'); break; }
+      try { importPreview(await decodeSave(text)); } catch (err) { toast(err.message || '読み込めませんでした'); }
+      break;
+    }
+    case 'import-yes':
+      if (ui.pendingImport) {
+        S = ui.pendingImport;
+        ui.pendingImport = null;
+        persist();
+        closeSheet();
+        toast('セーブデータを読み込みました');
+        render();
+      }
+      break;
   }
 });
-$('#sheet').addEventListener('click', (e) => { if (e.target.id === 'sheet') closeSheet(); });
+document.addEventListener('change', async (e) => {
+  if (e.target.id !== 'import-file') return;
+  const file = e.target.files && e.target.files[0];
+  e.target.value = '';
+  if (!file) return;
+  try { importPreview(await decodeSave(await file.text())); } catch (err) { toast(err.message || '読み込めませんでした'); }
+});
+$('#sheet').addEventListener('click', (e) => { if (e.target.id === 'sheet') { closeSheet(); render(); } });
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
-    if (!$('#sheet').hidden) closeSheet();
+    if (!$('#sheet').hidden) { closeSheet(); render(); }
+    else if (ui.summon && ui.summon.phase === 'cards') { ui.summon = null; renderSummon(); render(); }
     else if (ui.quiz && ui.quiz.confirmQuit) { ui.quiz.confirmQuit = false; renderQuiz(); }
   }
 });
@@ -1700,17 +2680,48 @@ document.addEventListener('input', (e) => {
 });
 $('#quiz').addEventListener('scroll', (e) => { if (e.target.id === 'q-scroll' && ui.quiz) ui.quiz.scrollKeep = e.target.scrollTop; }, true);
 
-// ---------------------------------------------------------------- boot
-function start(saved) {
+// ================================================================ boot
+function grantDaily() {
+  let loginIdx = null;
+  if (!S.welcomeGiven) { S.welcomeGiven = true; S.gems += 1500; S.tickets += 10; S.gold += 3000; ui.welcomeNow = true; }
+  const today = dayKey(new Date());
+  if (S.lastLoginDay !== today) {
+    S.lastLoginDay = today;
+    loginIdx = S.loginDays % 7;
+    S.loginDays++;
+    applyLoot(LOGIN[loginIdx]);
+  }
+  if (ui.welcomeNow || loginIdx !== null) {
+    persist();
+    render();
+    welcomeSheet(loginIdx);
+  }
+}
+const PLAIN_VIEWS = ['home', 'gacha', 'equip', 'review', 'profile', 'collection', 'save'];
+const validView = (x) => !!x && (PLAIN_VIEWS.includes(x.view)
+  || ((x.view === 'world' || x.view === 'boss') && !!SUBJ[x.id])
+  || ((x.view === 'stage' || x.view === 'lesson') && !!STAGE[x.id]));
+async function start(saved) {
   if (saved && typeof saved === 'object') {
-    if (['home', 'review', 'collection', 'profile'].includes(saved.tab)) ui.tab = saved.tab;
-    if (Array.isArray(saved.stack) && saved.stack.length && saved.stack.every((x) => x && (x.view === 'home' || (x.id && (SUBJ[x.id] || STAGE[x.id]))))) ui.stack = saved.stack;
+    if (TABS.includes(saved.tab)) ui.tab = saved.tab;
+    if (saved.stacks && typeof saved.stacks === 'object') {
+      for (const t of TABS) {
+        const st = saved.stacks[t];
+        if (Array.isArray(st) && st.length && st.every(validView)) ui.stacks[t] = st;
+      }
+    }
   }
   render();
-  connectCloud();
+  if (!inArtifact && navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
+  if (inArtifact) {
+    window.claude.use('downloads').then((dl) => { ui.downloads = dl; ui.canDownload = !!dl; if (top().view === 'save') render(); }).catch(() => {});
+  }
+  // claude.ai 上では、保存済みデータを読み込んでから日替わり報酬を配る
+  await connectCloud();
+  grantDaily();
 }
 const hot = window.claude && window.claude.hot;
-if (hot && typeof hot.snapshot === 'function') hot.snapshot(() => ({ tab: ui.tab, stack: ui.stack }));
+if (hot && typeof hot.snapshot === 'function') hot.snapshot(() => ({ tab: ui.tab, stacks: ui.stacks }));
 if (hot && typeof hot.ready === 'function') hot.ready(start); else start((hot && hot.data) || {});
 })();
 </script>
